@@ -37,7 +37,7 @@ public class Eagle extends AbstractEntity implements Destroyable, Printable, Int
     }
 
     @Override
-    public void setHealth(int health) {
-        this.health = health;
+    public void decreaseHealth(int damage) {
+        this.health = damage;
     }
 }

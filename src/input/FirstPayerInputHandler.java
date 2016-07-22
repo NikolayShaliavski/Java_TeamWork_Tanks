@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class InputHandler implements KeyListener {
+public class FirstPayerInputHandler implements KeyListener {
 
     public static Boolean firstPlayerUp = false;
     public static Boolean firstPlayerDown = false;
@@ -14,7 +14,7 @@ public class InputHandler implements KeyListener {
 
     public static int lastDirection = 1;
 
-    public InputHandler(Frame frame) {
+    public FirstPayerInputHandler(Frame frame) {
         frame.addKeyListener(this);
     }
 
@@ -45,7 +45,7 @@ public class InputHandler implements KeyListener {
             firstPlayerLeft = false;
         }
 
-        if (keyCode == KeyEvent.VK_0) {
+        if (keyCode == KeyEvent.VK_SPACE) {
             firstPlayerShoot = false;
         }
     }
@@ -56,7 +56,7 @@ public class InputHandler implements KeyListener {
             firstPlayerDown = false;
             firstPlayerRight = false;
             firstPlayerLeft = false;
-
+            
             lastDirection = 1;
         } else if (keyCode == KeyEvent.VK_DOWN) {
             firstPlayerDown = true;
@@ -81,7 +81,7 @@ public class InputHandler implements KeyListener {
             lastDirection = 4;
         }
 
-        if (keyCode == KeyEvent.VK_0) {
+        if (keyCode == KeyEvent.VK_SPACE) {
             firstPlayerShoot = true;
         }
     }

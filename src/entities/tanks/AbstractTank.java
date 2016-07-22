@@ -21,7 +21,7 @@ public abstract class AbstractTank extends AbstractEntity
 
     protected AbstractTank(int x, int y, int width, int height, int health, int speed, int damage) {
         super(x, y, width, height);
-        this.health = health;
+        this.setHealth(health);
         this.speed = speed;
         this.damage = damage;
 
@@ -34,8 +34,8 @@ public abstract class AbstractTank extends AbstractEntity
     }
 
     @Override
-    public void setHealth(int health) {
-        this.health = health;
+    public void decreaseHealth(int damage) {
+        this.setHealth(this.getHealth() - damage);
     }
 
     @Override
@@ -64,5 +64,9 @@ public abstract class AbstractTank extends AbstractEntity
         }
 
         this.bullets.removeAll(toRemove);
+    }
+
+    private void setHealth(int health) {
+        this.health = health;
     }
 }

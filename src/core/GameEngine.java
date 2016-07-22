@@ -7,7 +7,7 @@ import gameStates.MenuState;
 import gameStates.State;
 import gameStates.StateManager;
 import images.Images;
-import input.InputHandler;
+import input.FirstPayerInputHandler;
 import input.MouseHandler;
 
 import java.awt.*;
@@ -21,7 +21,7 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
 
     private State currentGameState;
 
-    public static InputHandler inputHandler;
+    public static FirstPayerInputHandler firstPayerInputHandler;
     public static MouseHandler mouseHandler;
 
     private boolean isRunning;
@@ -99,7 +99,7 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
 
         Images.loadImages();
 
-        inputHandler = new InputHandler(this.gameWindow.getFrame());
+        firstPayerInputHandler = new FirstPayerInputHandler(this.gameWindow.getFrame());
         mouseHandler = new MouseHandler(this.gameWindow.getFrame(), this.gameWindow.getCanvas());
 
         this.currentGameState = new MenuState(this);

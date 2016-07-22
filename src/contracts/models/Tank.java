@@ -10,7 +10,7 @@ import java.util.List;
 public interface Tank extends Updatable, Intersectable, Printable {
     int getHealth();
 
-    void setHealth(int health);
+    void decreaseHealth(int damage);
 
     int getDamage();
 

@@ -7,7 +7,7 @@ import contracts.Updatable;
 import core.GameWindow;
 import entities.bullets.Bullet;
 import images.Images;
-import input.InputHandler;
+import input.FirstPayerInputHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,6 +21,8 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     private static final int PLAYER_TANK_BULLET_SPEED = 4;
     private static final int PLAYER_TANK_INITIAL_HEALTH = 10;
     private static final int PLAYER_TANK_INITIAL_DAMAGE = 10;
+
+    private FirstPayerInputHandler inputHandler;
 
     private int collisionDirection = -1;
 
@@ -40,7 +42,7 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     @Override
     public void update() {
         this.collisionDirection = -1;
-        this.direction = InputHandler.lastDirection;
+        this.direction = FirstPayerInputHandler.lastDirection;
 
         this.move();
         this.performShooting();
@@ -52,19 +54,19 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
 
     @Override
     public void print(Graphics graphics) {
-        if (!InputHandler.firstPlayerUp && !InputHandler.firstPlayerDown && !InputHandler.firstPlayerRight && !InputHandler.firstPlayerLeft) {
+        if (!FirstPayerInputHandler.firstPlayerUp && !FirstPayerInputHandler.firstPlayerDown && !FirstPayerInputHandler.firstPlayerRight && !FirstPayerInputHandler.firstPlayerLeft) {
             // Default direction - firstPlayerUp, when no key is pressed
-            BufferedImage image = getPlayerDirectionImage(InputHandler.lastDirection);
+            BufferedImage image = getPlayerDirectionImage(FirstPayerInputHandler.lastDirection);
             graphics.drawImage(image, this.x, this.y, null);
             return;
 
-        } else if (InputHandler.firstPlayerUp) {
+        } else if (FirstPayerInputHandler.firstPlayerUp) {
             graphics.drawImage(Images.firstPlayerTankUP, this.x, this.y, null);
-        } else if (InputHandler.firstPlayerDown) {
+        } else if (FirstPayerInputHandler.firstPlayerDown) {
             graphics.drawImage(Images.firstPlayerTankDown, this.x, this.y, null);
-        } else if (InputHandler.firstPlayerLeft) {
+        } else if (FirstPayerInputHandler.firstPlayerLeft) {
             graphics.drawImage(Images.firstPlayerTankLeft, this.x, this.y, null);
-        } else if (InputHandler.firstPlayerRight) {
+        } else if (FirstPayerInputHandler.firstPlayerRight) {
             graphics.drawImage(Images.firstPlayerTankRight, this.x, this.y, null);
         }
 
@@ -83,9 +85,9 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     }
 
     @Override
-    public void dealWithCollision() {
+        public void dealWithCollision() {
 
-        this.direction = InputHandler.lastDirection;
+        this.direction = FirstPayerInputHandler.lastDirection;
         this.collisionDirection = this.direction;
 
         this.move();
@@ -98,13 +100,13 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
 
     @Override
     public boolean intersect(Rectangle rectangle) {
-        if (InputHandler.firstPlayerUp) {
+        if (FirstPayerInputHandler.firstPlayerUp) {
             this.setBoundingBox(this.x, this.y - this.getSpeed(), this.width, this.height);
-        } else if (InputHandler.firstPlayerRight) {
+        } else if (FirstPayerInputHandler.firstPlayerRight) {
             this.setBoundingBox(this.x + this.getSpeed(), this.y, this.width, this.height);
-        } else if (InputHandler.firstPlayerDown) {
+        } else if (FirstPayerInputHandler.firstPlayerDown) {
             this.setBoundingBox(this.x, this.y + this.getSpeed(), this.width, this.height);
-        } else if (InputHandler.firstPlayerLeft) {
+        } else if (FirstPayerInputHandler.firstPlayerLeft) {
             this.setBoundingBox(this.x - this.getSpeed(), this.y, this.width, this.height);
         }
 
@@ -112,13 +114,13 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     }
 
     private void performShooting() {
-        if (InputHandler.firstPlayerShoot && !hasShot) {
+        if (FirstPayerInputHandler.firstPlayerShoot && !hasShot) {
             if (this.shootTicks > 60) {
                 this.shoot();
                 hasShot = true;
                 this.shootTicks = 0;
             }
-        } else if (!InputHandler.firstPlayerShoot) {
+        } else if (!FirstPayerInputHandler.firstPlayerShoot) {
             hasShot = false;
         }
 
@@ -147,15 +149,15 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     }
 
     private void move() {
-        if (InputHandler.firstPlayerUp && this.y - this.getSpeed() > 0 && this.collisionDirection != 1) {
+        if (FirstPayerInputHandler.firstPlayerUp && this.y - this.getSpeed() > 0 && this.collisionDirection != 1) {
             this.y -= this.getSpeed();
-        } else if (InputHandler.firstPlayerDown &&
+        } else if (FirstPayerInputHandler.firstPlayerDown &&
                 this.y + PLAYER_TANK_HEIGHT + this.getSpeed() <= GameWindow.WINDOW_HEIGHT && this.collisionDirection
                 != 2) {
             this.y += this.getSpeed();
-        } else if (InputHandler.firstPlayerLeft && this.x - this.getSpeed() > 0 && this.collisionDirection != 3) {
+        } else if (FirstPayerInputHandler.firstPlayerLeft && this.x - this.getSpeed() > 0 && this.collisionDirection != 3) {
             this.x -= this.getSpeed();
-        } else if (InputHandler.firstPlayerRight &&
+        } else if (FirstPayerInputHandler.firstPlayerRight &&
                 this.x + PLAYER_TANK_WIDTH + this.getSpeed() <= GameWindow.WINDOW_WIDTH &&
                 this.collisionDirection != 4) {
             this.x += this.getSpeed();
