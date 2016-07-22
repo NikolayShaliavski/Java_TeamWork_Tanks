@@ -1,14 +1,14 @@
 package core;
 
-import contracts.core.Engine;
 import contracts.Printable;
 import contracts.Updatable;
+import contracts.core.Engine;
+import contracts.inputHandler.MenuInputHandler;
 import gameStates.MenuState;
 import gameStates.State;
 import gameStates.StateManager;
 import images.Images;
-import input.FirstPayerInputHandler;
-import input.MouseHandler;
+import input.*;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -21,8 +21,9 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
 
     private State currentGameState;
 
-    public static FirstPayerInputHandler firstPayerInputHandler;
-    public static MouseHandler mouseHandler;
+    private InputHandler firstPayerInputHandler;
+    private InputHandler secondPlayerInputHandler;
+    private MenuInputHandler menuInputHandler;
 
     private boolean isRunning;
 
@@ -30,6 +31,16 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
         this.gameWindow = new GameWindow(gameTitle);
         this.init();
         this.isRunning = true;
+    }
+
+    @Override
+    public InputHandler getFirstPlayerInputHandler() {
+        return this.firstPayerInputHandler;
+    }
+
+    @Override
+    public InputHandler getSecondPlayerInputHandler() {
+        return this.secondPlayerInputHandler;
     }
 
     @Override
@@ -99,10 +110,11 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
 
         Images.loadImages();
 
-        firstPayerInputHandler = new FirstPayerInputHandler(this.gameWindow.getFrame());
-        mouseHandler = new MouseHandler(this.gameWindow.getFrame(), this.gameWindow.getCanvas());
+        this.firstPayerInputHandler = new FirstPlayerInputHandler(this.gameWindow.getFrame());
+        this.secondPlayerInputHandler = new SecondPlayerInputHandler(this.gameWindow.getFrame());
+        this.menuInputHandler = new MenuInputHandlerImpl(this.gameWindow.getFrame());
 
-        this.currentGameState = new MenuState(this);
+        this.currentGameState = new MenuState(this, this.menuInputHandler);
         StateManager.setCurrentState(this.currentGameState);
     }
 }

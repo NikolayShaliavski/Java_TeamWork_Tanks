@@ -9,8 +9,8 @@ import entities.bullets.Bullet;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractTank extends AbstractEntity
-        implements Tank, Destroyable {
+public abstract class AbstractTank extends AbstractEntity implements Tank, Destroyable {
+
     protected int direction;
 
     private int health;

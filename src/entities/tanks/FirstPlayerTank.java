@@ -1,6 +1,7 @@
 package entities.tanks;
 
 import core.GameWindow;
+import input.InputHandler;
 
 public class FirstPlayerTank extends PlayerTank {
 
@@ -9,29 +10,7 @@ public class FirstPlayerTank extends PlayerTank {
     private static final int START_Y_POSITION =
             GameWindow.WINDOW_HEIGHT - PlayerTank.PLAYER_TANK_HEIGHT;
 
-    public FirstPlayerTank() {
-        super(START_X_POSITION, START_Y_POSITION);
+    public FirstPlayerTank(InputHandler inputHandler) {
+        super(START_X_POSITION, START_Y_POSITION, inputHandler);
     }
-
-//    @Override
-//    public void print(Graphics graphics) {
-//
-//        if (FirstPayerInputHandler.firstPlayerUp) {
-//            graphics.drawImage(Images.firstPlayerTankUP, this.x, this.y, null);
-//        } else if (FirstPayerInputHandler.firstPlayerDown) {
-//            graphics.drawImage(Images.firstPlayerTankDown, this.x, this.y, null);
-//        } else if (FirstPayerInputHandler.firstPlayerLeft) {
-//            graphics.drawImage(Images.firstPlayerTankLeft, this.x, this.y, null);
-//        } else if (FirstPayerInputHandler.firstPlayerRight) {
-//            graphics.drawImage(Images.firstPlayerTankRight, this.x, this.y, null);
-//        }
-//
-//        graphics.setColor(Color.WHITE);
-//        for (int i = 0; i < this.getBullets().size(); i++) {
-//            this.getBullets().get(i).print(graphics);
-//        }
-//
-//        // Prints only bounding box
-//        super.print(graphics);
-//    }
 }

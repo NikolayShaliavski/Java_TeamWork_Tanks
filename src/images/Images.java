@@ -5,15 +5,15 @@ import java.awt.image.BufferedImage;
 public class Images {
     public static BufferedImage menuBack;
 
-    public static BufferedImage firstPlayerTankUP;
-    public static BufferedImage firstPlayerTankDown;
-    public static BufferedImage firstPlayerTankLeft;
-    public static BufferedImage firstPlayerTankRight;
+    public static BufferedImage playerTankUp;
+    public static BufferedImage playerTankDown;
+    public static BufferedImage playerTankLeft;
+    public static BufferedImage playerTankRight;
 
-    public static BufferedImage secondPlayerTankUP;
-    public static BufferedImage secondPlayerTankDown;
-    public static BufferedImage secondPlayerTankLeft;
-    public static BufferedImage secondPlayerTankRight;
+//    public static BufferedImage secondPlayerTankUP;
+//    public static BufferedImage secondPlayerTankDown;
+//    public static BufferedImage secondPlayerTankLeft;
+//    public static BufferedImage secondPlayerTankRight;
 
     public static BufferedImage enemyTankUp;
     public static BufferedImage enemyTankDown;
@@ -34,15 +34,25 @@ public class Images {
     public static void loadImages() {
         menuBack = ImageLoader.loadImage("resources\\menu_back.jpg");
 
-        firstPlayerTankUP = ImageLoader.loadImage("resources\\player_up.png");
-        firstPlayerTankDown = ImageLoader.loadImage("resources\\player_down.png");
-        firstPlayerTankRight = ImageLoader.loadImage("resources\\player_right.png");
-        firstPlayerTankLeft = ImageLoader.loadImage("resources\\player_left.png");
+//        playerTankUp = ImageLoader.loadImage("resources\\player_up.png");
+//        playerTankDown = ImageLoader.loadImage("resources\\player_down.png");
+//        playerTankRight = ImageLoader.loadImage("resources\\player_right.png");
+//        playerTankLeft = ImageLoader.loadImage("resources\\player_left.png");
 
-        enemyTankUp = ImageLoader.loadImage("resources\\normal_enemy_up.png");
-        enemyTankDown = ImageLoader.loadImage("resources\\normal_enemy_down.png");
-        enemyTankLeft = ImageLoader.loadImage("resources\\normal_enemy_left.png");
-        enemyTankRight = ImageLoader.loadImage("resources\\normal_enemy_right.png");
+//        enemyTankUp = ImageLoader.loadImage("resources\\normal_enemy_up.png");
+//        enemyTankDown = ImageLoader.loadImage("resources\\normal_enemy_down.png");
+//        enemyTankLeft = ImageLoader.loadImage("resources\\normal_enemy_left.png");
+//        enemyTankRight = ImageLoader.loadImage("resources\\normal_enemy_right.png");
+
+        playerTankUp = ImageLoader.loadImage("resources\\player4.jpg");
+        playerTankDown = ImageLoader.loadImage("resources\\player2.jpg");
+        playerTankRight = ImageLoader.loadImage("resources\\player1.jpg");
+        playerTankLeft = ImageLoader.loadImage("resources\\player3.jpg");
+
+        enemyTankUp = ImageLoader.loadImage("resources\\enemy3.jpg");
+        enemyTankDown = ImageLoader.loadImage("resources\\enemy2.jpg");
+        enemyTankLeft = ImageLoader.loadImage("resources\\enemy4.jpg");
+        enemyTankRight = ImageLoader.loadImage("resources\\enemy.jpg");
 
         eagle = ImageLoader.loadImage("resources\\eagle.png");
 

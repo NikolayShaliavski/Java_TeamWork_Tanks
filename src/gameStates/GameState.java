@@ -13,6 +13,7 @@ import entities.obsticles.bricks.Steel;
 import entities.obsticles.walls.BrickWall;
 import entities.obsticles.walls.SteelWall;
 import entities.tanks.*;
+import input.InputHandler;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class GameState extends State implements Updatable, Printable {
     private Eagle eagle;
     private PlayerTank[] playerTanks;
     private Bonus bonus;
+
+    private InputHandler[] inputHandlers;
 
     private List<EnemyTank> enemyTanks;
     private int enemiesCount;
@@ -46,16 +49,19 @@ public class GameState extends State implements Updatable, Printable {
 
     public GameState(Engine gameEngine,
                      int numberOfPlayers,
-                     int totalNumberOfEnemies) {
+                     int totalNumberOfEnemies,
+                     InputHandler... inputHandlers) {
         super(gameEngine);
+
+        this.inputHandlers = inputHandlers;
+        this.totalNumberOfEnemies = totalNumberOfEnemies;
+
         this.brickField = new BrickField();
         this.initEagle();
         this.initWallsAroundEagle();
         this.initBrickOnField();
-        this.initPlayerTanks(numberOfPlayers);
+        this.initPlayerTanks(numberOfPlayers, inputHandlers);
         this.initEnemyTanks();
-
-        this.totalNumberOfEnemies = totalNumberOfEnemies;
     }
 
     @Override
@@ -74,7 +80,7 @@ public class GameState extends State implements Updatable, Printable {
         this.removeDeadEnemies();
 
         this.spawnEnemy();
-
+        this.removeDeadPlayers();
         this.checkIfGameEnded();
 
         this.checkBonus();
@@ -198,13 +204,13 @@ public class GameState extends State implements Updatable, Printable {
                 GameWindow.WINDOW_HEIGHT - Eagle.EAGLE_HEIGHT);
     }
 
-    private void initPlayerTanks(int numberOfPlayers) {
+    private void initPlayerTanks(int numberOfPlayers, InputHandler[] inputHandlers) {
 
         this.playerTanks = new PlayerTank[numberOfPlayers];
-        PlayerTank firstPlayer = new FirstPlayerTank();
+        PlayerTank firstPlayer = new FirstPlayerTank(inputHandlers[0]);
         this.playerTanks[0] = firstPlayer;
         if (numberOfPlayers == 2) {
-            PlayerTank secondPlayer = new SecondPlayerTank();
+            PlayerTank secondPlayer = new SecondPlayerTank(inputHandlers[1]);
             this.playerTanks[1] = secondPlayer;
         }
 //        int x = (GameWindow.WINDOW_WIDTH / 2) - (GameWindow.WINDOW_HEIGHT / 4);
@@ -244,6 +250,15 @@ public class GameState extends State implements Updatable, Printable {
         boolean[] canMovePlayers = new boolean[this.playerTanks.length];
         for (int i = 0; i < canMovePlayers.length; i++) {
             canMovePlayers[i] = true;
+        }
+
+        if (this.playerTanks.length == 2) {
+            if (this.playerTanks[0].intersect(this.playerTanks[1].getBoundingBox())) {
+                canMovePlayers[0] = false;
+            }
+            if (this.playerTanks[1].intersect(this.playerTanks[0].getBoundingBox())) {
+                canMovePlayers[1] = false;
+            }
         }
 
         for (EnemyTank enemyTank : this.enemyTanks) {
@@ -465,6 +480,20 @@ public class GameState extends State implements Updatable, Printable {
             }
         }
 
+        if (this.playerTanks.length == 2) {
+            for (Bullet bullet : this.playerTanks[0].getBullets()) {
+                if (bullet.intersect(this.playerTanks[1].getBoundingBox())) {
+                    bulletsToRemove.get(0).add(bullet);
+                }
+            }
+
+            for (Bullet bullet : this.playerTanks[1].getBullets()) {
+                if (bullet.intersect(this.playerTanks[0].getBoundingBox())) {
+                    bulletsToRemove.get(1).add(bullet);
+                }
+            }
+        }
+
         for (int i = 0; i < this.playerTanks.length; i++) {
             this.playerTanks[i].getBullets().removeAll(bulletsToRemove.get(i));
         }
@@ -515,6 +544,22 @@ public class GameState extends State implements Updatable, Printable {
         }
     }
 
+    private void removeDeadPlayers() {
+        List<PlayerTank> playerTanksAlive = new ArrayList<>();
+
+        for (int i = 0; i < this.playerTanks.length; i++) {
+            if (this.playerTanks[i].getHealth() > 0) {
+                playerTanksAlive.add(playerTanks[i]);
+            }
+        }
+
+        PlayerTank[] newPlayerTankArr = new PlayerTank[playerTanksAlive.size()];
+        for (int i = 0; i < playerTanksAlive.size(); i++) {
+            newPlayerTankArr[i] = playerTanksAlive.get(i);
+        }
+        this.playerTanks = newPlayerTankArr;
+    }
+
     private void checkIfGameEnded() {
         if (this.eagle.health <= 0) {
             StateManager.setCurrentState(new EndGameState(this.gameEngine, "You Lost!"));
@@ -524,17 +569,9 @@ public class GameState extends State implements Updatable, Printable {
             StateManager.setCurrentState(new EndGameState(this.gameEngine, "You Won!"));
         }
 
-
-        List<PlayerTank> playerTanksToRemove = new ArrayList<>();
-        for (int i = 0; i < this.playerTanks.length; i++) {
-            if (this.playerTanks[i].getHealth() <= 0) {
-                playerTanksToRemove.add(this.playerTanks[i]);
-                //StateManager.setCurrentState(new EndGameState(this.gameEngine, "You Lost!"));
-            }
+        if (this.playerTanks.length == 0) {
+            StateManager.setCurrentState(new EndGameState(this.gameEngine, "You Lost!"));
         }
-
-        // TODO: this may not work
-        //Arrays.asList(this.playerTanks).removeAll(playerTanksToRemove);
     }
 
     private void spawnEnemy() {
