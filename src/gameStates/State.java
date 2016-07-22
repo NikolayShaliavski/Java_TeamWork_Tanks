@@ -1,13 +1,13 @@
 package gameStates;
 
+import contracts.core.Engine;
 import contracts.Printable;
 import contracts.Updatable;
-import core.GameEngine;
 
 public abstract class State implements Updatable, Printable {
-    protected GameEngine gameEngine;
+    protected Engine gameEngine;
 
-    protected State(GameEngine gameEngine) {
+    protected State(Engine gameEngine) {
         this.gameEngine = gameEngine;
     }
 }

@@ -1,7 +1,7 @@
 package entities.obsticles.walls;
 
 import contracts.Printable;
-import entities.Entity;
+import entities.AbstractEntity;
 import entities.obsticles.bricks.Brick;
 import entities.obsticles.bricks.Steel;
 
@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SteelWall extends Entity implements Printable {
+public class SteelWall extends AbstractEntity implements Printable {
     private Set<Steel> steel;
 
     public SteelWall(int x, int y, int rows, int cols, boolean fromUpToDown) {

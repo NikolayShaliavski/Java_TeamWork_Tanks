@@ -1,11 +1,11 @@
 package entities.obsticles.bricks;
 
-import entities.Entity;
+import entities.AbstractEntity;
 import images.Images;
 
 import java.awt.*;
 
-public class Brick extends Entity {
+public class Brick extends AbstractEntity {
     public static final int BRICK_WIDTH = Images.brick.getWidth();
     public static final int BRICK_HEIGHT = Images.brick.getHeight();
 

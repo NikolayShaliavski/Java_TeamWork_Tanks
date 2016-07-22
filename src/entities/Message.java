@@ -2,22 +2,22 @@ package entities;
 
 import java.awt.*;
 
-public class Message extends Entity {
+public class Message extends AbstractEntity {
+
     private String message;
     private Font font;
 
-    public Message(int x, int y, Font font, String message, Graphics graphics) {
-        super(x, y, 50, 50);
+    public Message(int x,
+                   int y,
+                   Font font,
+                   String message,
+                   Graphics graphics) {
+        // Setting default values on width and height,
+        // because we haven't calculated them.
+        super(x, y, -1, -1);
         this.message = message;
-        this.setWidthAndHeight(graphics, font);
+        this.calcWidthAndHeight(graphics, font);
         this.font = font;
-    }
-
-    private void setWidthAndHeight(Graphics graphics, Font font) {
-        graphics.setFont(font);
-        this.height = graphics.getFontMetrics().getHeight();
-        this.width = graphics.getFontMetrics().stringWidth(this.message);
-        this.setBoundingBox(this.x, this.y, this.width, this.height);
     }
 
     @Override
@@ -44,5 +44,12 @@ public class Message extends Entity {
 
     public String getMessage() {
         return this.message;
+    }
+
+    private void calcWidthAndHeight(Graphics graphics, Font font) {
+        graphics.setFont(font);
+        this.height = graphics.getFontMetrics().getHeight();
+        this.width = graphics.getFontMetrics().stringWidth(this.message);
+        this.setBoundingBox(this.x, this.y, this.width, this.height);
     }
 }

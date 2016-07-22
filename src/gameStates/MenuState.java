@@ -1,6 +1,8 @@
 package gameStates;
 
-import core.GameEngine;
+import contracts.Printable;
+import contracts.Updatable;
+import contracts.core.Engine;
 import core.GameWindow;
 import entities.Message;
 import images.Images;
@@ -12,7 +14,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuState extends State {
+public class MenuState extends State implements Updatable, Printable {
     private List<Message> messages;
 
     private static final String ONE_PLAYER_MESSAGE = "One Player";
@@ -22,7 +24,7 @@ public class MenuState extends State {
 
     private int indent;
 
-    public MenuState(GameEngine gameEngine) {
+    public MenuState(Engine gameEngine) {
         super(gameEngine);
         this.initMessages();
     }
@@ -70,25 +72,37 @@ public class MenuState extends State {
     }
 
     private void executeCommand(String message) {
-        if (message.equals(ONE_PLAYER_MESSAGE)) {
-            this.executeOnePlayerCommand();
-        } else if (message.equals(HOW_TO_PLAY_MESSAGE)) {
-            this.executeHowToPlayCommand();
-        } else if (message.equals(EXIT_MESSAGE)) {
-            this.executeExitCommand();
+        switch (message) {
+            case ONE_PLAYER_MESSAGE:
+                this.executeOnePlayerCommand();
+                break;
+            case TWO_PLAYERS_MESSAGE:
+                this.executeTwoPlayersCommand();
+                break;
+            case HOW_TO_PLAY_MESSAGE:
+                this.executeHowToPlayCommand();
+                break;
+            case EXIT_MESSAGE:
+                this.executeExitCommand();
+                break;
         }
     }
 
+    private void executeOnePlayerCommand() {
+        StateManager.setCurrentState(new OnePlayerState(this.gameEngine));
+    }
+
+    private void executeTwoPlayersCommand() {
+        StateManager.setCurrentState(new TwoPlayerState(this.gameEngine));
+    }
+
     private void executeHowToPlayCommand() {
+        // TODO ...
     }
 
     private void executeExitCommand() {
         JFrame frame = this.gameEngine.getGameWindow().getFrame();
         frame.dispatchEvent(
                 new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-    }
-
-    private void executeOnePlayerCommand() {
-        StateManager.setCurrentState(new GameState(this.gameEngine));
     }
 }

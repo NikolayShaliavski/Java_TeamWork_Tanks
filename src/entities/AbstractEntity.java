@@ -1,17 +1,18 @@
 package entities;
 
+import contracts.models.Entity;
 import contracts.Intersectable;
 import contracts.Printable;
 
 import java.awt.*;
 
-public abstract class Entity implements Printable, Intersectable {
+public abstract class AbstractEntity implements Entity, Printable, Intersectable {
     protected int x, y;
     protected int width, height;
 
     private Rectangle boundingBox;
 
-    protected Entity(int x, int y, int width, int height) {
+    protected AbstractEntity(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -20,26 +21,31 @@ public abstract class Entity implements Printable, Intersectable {
         this.boundingBox = new Rectangle(this.x, this.y, this.width, this.height);
     }
 
+    @Override
     public Rectangle getBoundingBox() {
         return this.boundingBox;
     }
 
-    public void setBoundingBox(int x, int y, int width, int height) {
+    protected void setBoundingBox(int x, int y, int width, int height) {
         this.boundingBox.setBounds(x, y, width, height);
     }
 
+    @Override
     public int getX() {
         return this.x;
     }
 
+    @Override
     public int getY() {
         return this.y;
     }
 
+    @Override
     public int getWidth() {
         return this.width;
     }
 
+    @Override
     public int getHeight() {
         return this.height;
     }

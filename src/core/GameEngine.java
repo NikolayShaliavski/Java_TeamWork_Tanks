@@ -1,8 +1,8 @@
 package core;
 
+import contracts.core.Engine;
 import contracts.Printable;
 import contracts.Updatable;
-import gameStates.GameState;
 import gameStates.MenuState;
 import gameStates.State;
 import gameStates.StateManager;
@@ -10,13 +10,10 @@ import images.Images;
 import input.InputHandler;
 import input.MouseHandler;
 
-import javax.sound.sampled.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.IOException;
 
-public class GameEngine implements Updatable, Printable {
+public class GameEngine implements Engine, Runnable, Updatable, Printable {
     private GameWindow gameWindow;
 
     public Graphics graphics;
@@ -35,8 +32,8 @@ public class GameEngine implements Updatable, Printable {
         this.isRunning = true;
     }
 
+    @Override
     public void run() {
-        // TODO: Add a thread to make the game move smooth
         int fps = 70;
         double ticksPerFrame = 1_000_000_000 / fps;
         double delta = 0;
@@ -80,14 +77,17 @@ public class GameEngine implements Updatable, Printable {
         graphics.dispose();
     }
 
+    @Override
     public void stop() {
         this.isRunning = false;
     }
 
+    @Override
     public Graphics getGraphics() {
         return this.graphics;
     }
 
+    @Override
     public GameWindow getGameWindow() {
         return this.gameWindow;
     }

@@ -1,12 +1,12 @@
 package entities.bullets;
 
 import contracts.Updatable;
-import entities.Entity;
+import entities.AbstractEntity;
 import images.Images;
 
 import java.awt.*;
 
-public class Bullet extends Entity implements Updatable {
+public class Bullet extends AbstractEntity implements Updatable {
     public static final int BULLET_WIDTH = Images.bullet.getWidth();
     public static final int BULLET_HEIGHT = Images.bullet.getHeight();
 

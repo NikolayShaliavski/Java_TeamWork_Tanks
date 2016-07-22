@@ -1,6 +1,8 @@
 package gameStates;
 
-import core.GameEngine;
+import contracts.Printable;
+import contracts.Updatable;
+import contracts.core.Engine;
 import core.GameWindow;
 import entities.Eagle;
 import entities.bonuses.Bonus;
@@ -11,15 +13,16 @@ import entities.obsticles.bricks.Steel;
 import entities.obsticles.walls.BrickWall;
 import entities.obsticles.walls.SteelWall;
 import entities.tanks.EnemyTank;
+import entities.tanks.FirstPlayerTank;
 import entities.tanks.PlayerTank;
-import entities.tanks.Tank;
+import entities.tanks.AbstractTank;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameState extends State {
+public class OnePlayerState extends State implements Updatable, Printable {
 
     private static final int TOTAL_NUMBER_OF_ENEMIES = 10;
 
@@ -42,7 +45,7 @@ public class GameState extends State {
 
     private int timeToGetBonus;
 
-    public GameState(GameEngine gameEngine) {
+    public OnePlayerState(Engine gameEngine) {
         super(gameEngine);
         this.brickField = new BrickField();
         this.initEagle();
@@ -208,15 +211,15 @@ public class GameState extends State {
     private void removeDeadEnemies() {
         for (int i = 0; i < this.enemyTanks.size(); i++) {
             if (this.enemyTanks.get(i).getHealth() <= 0) {
-
-                timeToGetBonus++;
+                this.timeToGetBonus++;
                 if (timeToGetBonus == 3) {
-                    int bonusX = this.enemyTanks.get(i).getX() + this.enemyTanks.get(i).ENEMY_TANK_WIDTH / 4;
-                    int bonusY = this.enemyTanks.get(i).getY() + this.enemyTanks.get(i).ENEMY_TANK_HEIGHT / 4;
+                    int bonusX = this.enemyTanks.get(i).getX() + EnemyTank.ENEMY_TANK_WIDTH / 4;
+                    int bonusY = this.enemyTanks.get(i).getY() + EnemyTank.ENEMY_TANK_HEIGHT / 4;
                     this.bonus = new Bonus(bonusX, bonusY);
                     bonusExist = true;
                     timeToGetBonus = 0;
                 }
+
                 this.enemyTanks.remove(i);
             }
         }
@@ -376,7 +379,7 @@ public class GameState extends State {
         for (int i = 0; i < this.playerTank.getBullets().size(); i++) {
             Bullet playerBullet = this.playerTank.getBullets().get(i);
             for (int j = 0; j < this.enemyTanks.size(); j++) {
-                Tank enemyTank = this.enemyTanks.get(j);
+                AbstractTank enemyTank = this.enemyTanks.get(j);
                 if (playerBullet.intersect(enemyTank.getBoundingBox())) {
                     enemyTank.setHealth(enemyTank.getHealth() - this.playerTank.getDamage());
                     toRemove.add(this.playerTank.getBullets().get(i));
@@ -424,14 +427,14 @@ public class GameState extends State {
             for (int j = 0; j < enemyTank.getBullets().size(); j++) {
                 Bullet bullet = enemyTank.getBullets().get(j);
                 if (bullet.intersect(this.eagle.getBoundingBox())) {
-                    this.eagle.health -= 10;
+                    this.eagle.setHealth(this.eagle.getHealth() - 10);
                 }
             }
         }
 
         for (Bullet bullet : this.playerTank.getBullets()) {
             if (bullet.intersect(this.eagle.getBoundingBox())) {
-                this.eagle.health -= 10;
+                this.eagle.setHealth(this.eagle.getHealth() - 10);
             }
         }
     }
@@ -492,12 +495,6 @@ public class GameState extends State {
                     continue;
                 }
                 for (EnemyTank enemy : this.enemyTanks) {
-//                    int enemyX = enemy.getX();
-//                    if ((x >= enemyX && x <= enemyX + enemyTank.getWidth()) && enemyTank.getY() < enemyTank
-// .getHeight()) {
-//                        cannotGenerate = true;
-//                        break;
-//                    }
                     if (enemyTank.intersect(enemy.getBoundingBox())) {
                         cannotGenerate = true;
                         break;
@@ -507,15 +504,6 @@ public class GameState extends State {
 
 
             this.enemyTanks.add(enemyTank);
-//            if (this.spawnEnemyLeft) {
-//                this.enemyTanks.add(new EnemyTank(0, 0));
-//            } else {
-//                this.enemyTanks.add(new EnemyTank(
-//                        GameWindow.WINDOW_WIDTH - EnemyTank.ENEMY_TANK_WIDTH, 0));
-//            }
-//
-//            this.enemiesCount++;
-//            this.spawnEnemyLeft = !this.spawnEnemyLeft;
             this.enemiesCount++;
             this.ticksCounter = 0;
         }

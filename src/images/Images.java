@@ -5,10 +5,15 @@ import java.awt.image.BufferedImage;
 public class Images {
     public static BufferedImage menuBack;
 
-    public static BufferedImage playerTankUP;
-    public static BufferedImage playerTankDown;
-    public static BufferedImage playerTankLeft;
-    public static BufferedImage playerTankRight;
+    public static BufferedImage firstPlayerTankUP;
+    public static BufferedImage firstPlayerTankDown;
+    public static BufferedImage firstPlayerTankLeft;
+    public static BufferedImage firstPlayerTankRight;
+
+    public static BufferedImage secondPlayerTankUP;
+    public static BufferedImage secondPlayerTankDown;
+    public static BufferedImage secondPlayerTankLeft;
+    public static BufferedImage secondPlayerTankRight;
 
     public static BufferedImage enemyTankUp;
     public static BufferedImage enemyTankDown;
@@ -29,10 +34,10 @@ public class Images {
     public static void loadImages() {
         menuBack = ImageLoader.loadImage("resources\\menu_back.jpg");
 
-        playerTankUP = ImageLoader.loadImage("resources\\player_up.png");
-        playerTankDown = ImageLoader.loadImage("resources\\player_down.png");
-        playerTankRight = ImageLoader.loadImage("resources\\player_right.png");
-        playerTankLeft = ImageLoader.loadImage("resources\\player_left.png");
+        firstPlayerTankUP = ImageLoader.loadImage("resources\\player_up.png");
+        firstPlayerTankDown = ImageLoader.loadImage("resources\\player_down.png");
+        firstPlayerTankRight = ImageLoader.loadImage("resources\\player_right.png");
+        firstPlayerTankLeft = ImageLoader.loadImage("resources\\player_left.png");
 
         enemyTankUp = ImageLoader.loadImage("resources\\normal_enemy_up.png");
         enemyTankDown = ImageLoader.loadImage("resources\\normal_enemy_down.png");

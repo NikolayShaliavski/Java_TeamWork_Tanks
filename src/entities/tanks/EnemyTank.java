@@ -1,5 +1,8 @@
 package entities.tanks;
 
+import contracts.Intersectable;
+import contracts.Printable;
+import contracts.models.Tank;
 import contracts.Updatable;
 import core.GameWindow;
 import entities.bullets.Bullet;
@@ -8,7 +11,8 @@ import images.Images;
 import java.awt.*;
 import java.util.Random;
 
-public class EnemyTank extends Tank implements Updatable {
+public class EnemyTank extends AbstractTank
+        implements Tank, Updatable, Intersectable, Printable {
 
     public static final int ENEMY_TANK_WIDTH = Images.enemyTankUp.getWidth();
     public static final int ENEMY_TANK_HEIGHT = Images.enemyTankUp.getHeight();

@@ -1,80 +1,88 @@
 package input;
 
-import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class InputHandler implements KeyListener {
 
-    public static boolean up = false;
-    public static boolean down = false;
-    public static boolean right = false;
-    public static boolean left = false;
-    public static boolean space = false;
+    public static Boolean firstPlayerUp = false;
+    public static Boolean firstPlayerDown = false;
+    public static Boolean firstPlayerLeft = false;
+    public static Boolean firstPlayerRight = false;
+    public static Boolean firstPlayerShoot = false;
 
     public static int lastDirection = 1;
 
-    public InputHandler(JFrame frame) {
+    public InputHandler(Frame frame) {
         frame.addKeyListener(this);
     }
 
     @Override
     public void keyPressed(KeyEvent key) {
         int keyCode = key.getKeyCode();
-        if (keyCode == KeyEvent.VK_UP) {
-            up = true;
-            down = false;
-            right = false;
-            left = false;
-
-            lastDirection = 1;
-        } else if (keyCode == KeyEvent.VK_DOWN) {
-            down = true;
-            up = false;
-            right = false;
-            left = false;
-
-            lastDirection = 2;
-        } else if (keyCode == KeyEvent.VK_LEFT) {
-            left = true;
-            down = false;
-            up = false;
-            right = false;
-
-            lastDirection = 3;
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
-            right = true;
-            down = false;
-            left = false;
-            up = false;
-
-            lastDirection = 4;
-        }
-
-        if (keyCode == KeyEvent.VK_SPACE) {
-            space = true;
-        }
+        this.checkForPressedDirectionForFirstPlayer(keyCode);
     }
 
     @Override
     public void keyReleased(KeyEvent key) {
         int keyCode = key.getKeyCode();
-        if (keyCode == KeyEvent.VK_UP) {
-            up = false;
-        } else if (keyCode == KeyEvent.VK_DOWN) {
-            down = false;
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
-            right = false;
-        } else if (keyCode == KeyEvent.VK_LEFT) {
-            left = false;
-        }
-
-        if (keyCode == KeyEvent.VK_SPACE) {
-            space = false;
-        }
+        this.checkForReleasedDirectionForFirstPlayer(keyCode);
     }
 
     @Override
     public void keyTyped(KeyEvent key) {
+    }
+
+    private void checkForReleasedDirectionForFirstPlayer(int keyCode) {
+        if (keyCode == KeyEvent.VK_UP) {
+            firstPlayerUp = false;
+        } else if (keyCode == KeyEvent.VK_DOWN) {
+            firstPlayerDown = false;
+        } else if (keyCode == KeyEvent.VK_RIGHT) {
+            firstPlayerRight = false;
+        } else if (keyCode == KeyEvent.VK_LEFT) {
+            firstPlayerLeft = false;
+        }
+
+        if (keyCode == KeyEvent.VK_0) {
+            firstPlayerShoot = false;
+        }
+    }
+
+    private void checkForPressedDirectionForFirstPlayer(int keyCode) {
+        if (keyCode == KeyEvent.VK_UP) {
+            firstPlayerUp = true;
+            firstPlayerDown = false;
+            firstPlayerRight = false;
+            firstPlayerLeft = false;
+
+            lastDirection = 1;
+        } else if (keyCode == KeyEvent.VK_DOWN) {
+            firstPlayerDown = true;
+            firstPlayerUp = false;
+            firstPlayerRight = false;
+            firstPlayerLeft = false;
+
+            lastDirection = 2;
+        } else if (keyCode == KeyEvent.VK_LEFT) {
+            firstPlayerLeft = true;
+            firstPlayerDown = false;
+            firstPlayerUp = false;
+            firstPlayerRight = false;
+
+            lastDirection = 3;
+        } else if (keyCode == KeyEvent.VK_RIGHT) {
+            firstPlayerRight = true;
+            firstPlayerDown = false;
+            firstPlayerLeft = false;
+            firstPlayerUp = false;
+
+            lastDirection = 4;
+        }
+
+        if (keyCode == KeyEvent.VK_0) {
+            firstPlayerShoot = true;
+        }
     }
 }

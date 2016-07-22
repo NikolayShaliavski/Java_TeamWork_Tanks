@@ -1,10 +1,14 @@
 package entities;
 
+import contracts.Intersectable;
+import contracts.Printable;
+import contracts.models.Destroyable;
 import images.Images;
 
 import java.awt.*;
 
-public class Eagle extends Entity {
+public class Eagle extends AbstractEntity implements Destroyable, Printable, Intersectable {
+
     public static final int EAGLE_WIDTH = Images.eagle.getWidth();
     public static final int EAGLE_HEIGHT = Images.eagle.getHeight();
 
@@ -25,5 +29,15 @@ public class Eagle extends Entity {
     @Override
     public void print(Graphics graphics) {
         graphics.drawImage(Images.eagle, this.x, this.y, null);
+    }
+
+    @Override
+    public int getHealth() {
+        return this.health;
+    }
+
+    @Override
+    public void setHealth(int health) {
+        this.health = health;
     }
 }

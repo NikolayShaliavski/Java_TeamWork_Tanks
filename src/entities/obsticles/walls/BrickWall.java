@@ -1,14 +1,14 @@
 package entities.obsticles.walls;
 
 import contracts.Printable;
-import entities.Entity;
+import entities.AbstractEntity;
 import entities.obsticles.bricks.Brick;
 
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BrickWall extends Entity implements Printable {
+public class BrickWall extends AbstractEntity implements Printable {
     private Set<Brick> bricks;
 
     public BrickWall(int x, int y, int rows, int cols, boolean fromUpToDown) {

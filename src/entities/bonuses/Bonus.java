@@ -1,12 +1,12 @@
 package entities.bonuses;
 
 import contracts.Printable;
-import entities.Entity;
+import entities.AbstractEntity;
 import images.Images;
 
 import java.awt.*;
 
-public class Bonus extends Entity implements Printable{
+public class Bonus extends AbstractEntity implements Printable{
     private static final int FREEZE_WIDTH = Images.freeze.getWidth();
     private static final int FREEZE_HEIGHT = Images.freeze.getHeight();
 

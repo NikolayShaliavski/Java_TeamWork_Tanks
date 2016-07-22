@@ -1,15 +1,17 @@
 package gameStates;
 
-import core.GameEngine;
+import contracts.Printable;
+import contracts.Updatable;
+import contracts.core.Engine;
 import core.GameWindow;
 import images.Images;
 
 import java.awt.*;
 
-public class EndGameState extends State {
+public class EndGameState extends State implements Updatable, Printable {
     private String message;
 
-    public EndGameState(GameEngine gameEngine, String message) {
+    public EndGameState(Engine gameEngine, String message) {
         super(gameEngine);
         this.message = message;
     }

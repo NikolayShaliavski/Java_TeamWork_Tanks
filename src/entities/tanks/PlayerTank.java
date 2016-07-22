@@ -1,5 +1,8 @@
 package entities.tanks;
 
+import contracts.Intersectable;
+import contracts.Printable;
+import contracts.models.Tank;
 import contracts.Updatable;
 import core.GameWindow;
 import entities.bullets.Bullet;
@@ -9,14 +12,13 @@ import input.InputHandler;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class PlayerTank extends Tank implements Updatable {
+public class PlayerTank extends AbstractTank implements Tank, Updatable, Intersectable, Printable {
 
-    public static final int PLAYER_TANK_WIDTH = Images.playerTankUP.getWidth();
-    public static final int PLAYER_TANK_HEIGHT = Images.playerTankUP.getHeight();
+    public static final int PLAYER_TANK_WIDTH = Images.firstPlayerTankUP.getWidth();
+    public static final int PLAYER_TANK_HEIGHT = Images.firstPlayerTankUP.getHeight();
 
-    public static final int PLAYER_TANK_SPEED = 2;
-    public static final int PLAYER_TANK_BULLET_SPEED = 4;
-
+    private static final int PLAYER_TANK_SPEED = 2;
+    private static final int PLAYER_TANK_BULLET_SPEED = 4;
     private static final int PLAYER_TANK_INITIAL_HEALTH = 10;
     private static final int PLAYER_TANK_INITIAL_DAMAGE = 10;
 
@@ -50,27 +52,29 @@ public class PlayerTank extends Tank implements Updatable {
 
     @Override
     public void print(Graphics graphics) {
-        if (!InputHandler.up && !InputHandler.down && !InputHandler.right && !InputHandler.left) {
-            // Default direction - up, when no key is pressed
+        if (!InputHandler.firstPlayerUp && !InputHandler.firstPlayerDown && !InputHandler.firstPlayerRight && !InputHandler.firstPlayerLeft) {
+            // Default direction - firstPlayerUp, when no key is pressed
             BufferedImage image = getPlayerDirectionImage(InputHandler.lastDirection);
             graphics.drawImage(image, this.x, this.y, null);
-        } else if (InputHandler.up) {
-            graphics.drawImage(Images.playerTankUP, this.x, this.y, null);
-        } else if (InputHandler.down) {
-            graphics.drawImage(Images.playerTankDown, this.x, this.y, null);
-        } else if (InputHandler.left) {
-            graphics.drawImage(Images.playerTankLeft, this.x, this.y, null);
-        } else if (InputHandler.right) {
-            graphics.drawImage(Images.playerTankRight, this.x, this.y, null);
+            return;
+
+        } else if (InputHandler.firstPlayerUp) {
+            graphics.drawImage(Images.firstPlayerTankUP, this.x, this.y, null);
+        } else if (InputHandler.firstPlayerDown) {
+            graphics.drawImage(Images.firstPlayerTankDown, this.x, this.y, null);
+        } else if (InputHandler.firstPlayerLeft) {
+            graphics.drawImage(Images.firstPlayerTankLeft, this.x, this.y, null);
+        } else if (InputHandler.firstPlayerRight) {
+            graphics.drawImage(Images.firstPlayerTankRight, this.x, this.y, null);
         }
 
-        //// Bounding box
-//        graphics.setColor(Color.WHITE);
-//        graphics.drawRect(
-//                (int) this.getBoundingBox().getX(),
-//                (int) this.getBoundingBox().getY(),
-//                (int) this.getBoundingBox().getWidth(),
-//                (int) this.getBoundingBox().getHeight());
+        // Bounding box
+        graphics.setColor(Color.WHITE);
+        graphics.drawRect(
+                (int) this.getBoundingBox().getX(),
+                (int) this.getBoundingBox().getY(),
+                (int) this.getBoundingBox().getWidth(),
+                (int) this.getBoundingBox().getHeight());
 
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < this.getBullets().size(); i++) {
@@ -94,34 +98,27 @@ public class PlayerTank extends Tank implements Updatable {
 
     @Override
     public boolean intersect(Rectangle rectangle) {
-        //return (this.getBoundingBox().intersects(rectangle));
-//        if (this.getBoundingBox().intersects(rectangle)) {
-//            return true;
-//        }
-        if (InputHandler.up) {
+        if (InputHandler.firstPlayerUp) {
             this.setBoundingBox(this.x, this.y - this.getSpeed(), this.width, this.height);
-        } else if (InputHandler.right) {
+        } else if (InputHandler.firstPlayerRight) {
             this.setBoundingBox(this.x + this.getSpeed(), this.y, this.width, this.height);
-        } else if (InputHandler.down) {
+        } else if (InputHandler.firstPlayerDown) {
             this.setBoundingBox(this.x, this.y + this.getSpeed(), this.width, this.height);
-        } else if (InputHandler.left) {
+        } else if (InputHandler.firstPlayerLeft) {
             this.setBoundingBox(this.x - this.getSpeed(), this.y, this.width, this.height);
         }
 
-        if (this.getBoundingBox().intersects(rectangle)) {
-            return true;
-        }
-        return false;
+        return this.getBoundingBox().intersects(rectangle);
     }
 
     private void performShooting() {
-        if (InputHandler.space && !hasShot) {
+        if (InputHandler.firstPlayerShoot && !hasShot) {
             if (this.shootTicks > 60) {
                 this.shoot();
                 hasShot = true;
                 this.shootTicks = 0;
             }
-        } else if (!InputHandler.space) {
+        } else if (!InputHandler.firstPlayerShoot) {
             hasShot = false;
         }
 
@@ -150,22 +147,18 @@ public class PlayerTank extends Tank implements Updatable {
     }
 
     private void move() {
-        if (InputHandler.up && this.y - this.getSpeed() > 0 && this.collisionDirection != 1) {
+        if (InputHandler.firstPlayerUp && this.y - this.getSpeed() > 0 && this.collisionDirection != 1) {
             this.y -= this.getSpeed();
-            //this.direction = 1;
-        } else if (InputHandler.down &&
+        } else if (InputHandler.firstPlayerDown &&
                 this.y + PLAYER_TANK_HEIGHT + this.getSpeed() <= GameWindow.WINDOW_HEIGHT && this.collisionDirection
                 != 2) {
             this.y += this.getSpeed();
-            //this.direction = 2;
-        } else if (InputHandler.left && this.x - this.getSpeed() > 0 && this.collisionDirection != 3) {
+        } else if (InputHandler.firstPlayerLeft && this.x - this.getSpeed() > 0 && this.collisionDirection != 3) {
             this.x -= this.getSpeed();
-            //this.direction = 3;
-        } else if (InputHandler.right &&
+        } else if (InputHandler.firstPlayerRight &&
                 this.x + PLAYER_TANK_WIDTH + this.getSpeed() <= GameWindow.WINDOW_WIDTH &&
                 this.collisionDirection != 4) {
             this.x += this.getSpeed();
-            //this.direction = 4;
         }
 
         this.getBoundingBox().setBounds(this.x, this.y, this.width, this.height);
@@ -173,13 +166,13 @@ public class PlayerTank extends Tank implements Updatable {
 
     private BufferedImage getPlayerDirectionImage(int lastDirection) {
         if (lastDirection == 1) {
-            return Images.playerTankUP;
+            return Images.firstPlayerTankUP;
         } else if (lastDirection == 2) {
-            return Images.playerTankDown;
+            return Images.firstPlayerTankDown;
         } else if (lastDirection == 3) {
-            return Images.playerTankLeft;
+            return Images.firstPlayerTankLeft;
         } else if (lastDirection == 4) {
-            return Images.playerTankRight;
+            return Images.firstPlayerTankRight;
         }
 
         return null;

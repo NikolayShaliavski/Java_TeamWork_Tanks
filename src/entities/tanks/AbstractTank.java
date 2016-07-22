@@ -1,14 +1,16 @@
 package entities.tanks;
 
+import contracts.models.Destroyable;
+import contracts.models.Tank;
 import core.GameWindow;
-import entities.Entity;
+import entities.AbstractEntity;
 import entities.bullets.Bullet;
-import images.Images;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Tank extends Entity {
+public abstract class AbstractTank extends AbstractEntity
+        implements Tank, Destroyable {
     protected int direction;
 
     private int health;
@@ -17,7 +19,7 @@ public abstract class Tank extends Entity {
 
     private List<Bullet> bullets;
 
-    protected Tank(int x, int y, int width, int height, int health, int speed, int damage) {
+    protected AbstractTank(int x, int y, int width, int height, int health, int speed, int damage) {
         super(x, y, width, height);
         this.health = health;
         this.speed = speed;
@@ -26,27 +28,30 @@ public abstract class Tank extends Entity {
         this.bullets = new ArrayList<>();
     }
 
+    @Override
     public int getHealth() {
         return this.health;
     }
 
+    @Override
     public void setHealth(int health) {
         this.health = health;
     }
 
+    @Override
     public int getDamage() {
         return this.damage;
     }
 
+    @Override
     public int getSpeed() {
         return this.speed;
     }
 
+    @Override
     public List<Bullet> getBullets() {
         return this.bullets;
     }
-
-    public abstract void dealWithCollision();
 
     protected void removeOutOfRangeBullets() {
         ArrayList<Bullet> toRemove = new ArrayList<>();
