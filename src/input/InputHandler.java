@@ -11,6 +11,7 @@ public abstract class InputHandler implements PlayerInputHandler {
     private boolean right;
     private boolean left;
     private boolean shoot;
+    private boolean bomb;
 
     private int lastDirection;
 
@@ -62,6 +63,15 @@ public abstract class InputHandler implements PlayerInputHandler {
 
     protected void setShoot(boolean shoot) {
         this.shoot = shoot;
+    }
+
+    @Override
+    public boolean dropBomb() {
+        return this.bomb;
+    }
+
+    protected void setBomb(boolean bomb) {
+        this.bomb = bomb;
     }
 
     @Override

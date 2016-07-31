@@ -39,6 +39,9 @@ public class SecondPlayerInputHandler extends InputHandler {
         if (keyCode == KeyEvent.VK_CONTROL) {
             super.setShoot(false);
         }
+        if (keyCode == KeyEvent.VK_SHIFT) {
+            super.setBomb(false);
+        }
     }
 
     private void checkKeyPressed(int keyCode) {
@@ -74,6 +77,9 @@ public class SecondPlayerInputHandler extends InputHandler {
 
         if (keyCode == KeyEvent.VK_CONTROL) {
             super.setShoot(true);
+        }
+        if (keyCode == KeyEvent.VK_SHIFT) {
+            super.setBomb(true);
         }
     }
 }

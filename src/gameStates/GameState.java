@@ -3,9 +3,11 @@ package gameStates;
 import contracts.Printable;
 import contracts.Updatable;
 import contracts.core.Engine;
+import contracts.inputHandler.PlayerInputHandler;
 import core.GameWindow;
 import entities.Eagle;
-import entities.bonuses.Bonus;
+import entities.bonuses.Bomb;
+import entities.bonuses.Freeze;
 import entities.bullets.Bullet;
 import entities.obsticles.BrickField;
 import entities.obsticles.bricks.Brick;
@@ -23,13 +25,11 @@ import java.util.Random;
 
 public class GameState extends State implements Updatable, Printable {
 
-    //private static final int TOTAL_NUMBER_OF_ENEMIES = 10;
-
     private Eagle eagle;
     private PlayerTank[] playerTanks;
-    private Bonus bonus;
+    private Freeze freeze;
 
-    private InputHandler[] inputHandlers;
+    private PlayerInputHandler[] inputHandlers;
 
     private List<EnemyTank> enemyTanks;
     private int enemiesCount;
@@ -50,7 +50,7 @@ public class GameState extends State implements Updatable, Printable {
     public GameState(Engine gameEngine,
                      int numberOfPlayers,
                      int totalNumberOfEnemies,
-                     InputHandler... inputHandlers) {
+                     PlayerInputHandler... inputHandlers) {
         super(gameEngine);
 
         this.inputHandlers = inputHandlers;
@@ -108,7 +108,7 @@ public class GameState extends State implements Updatable, Printable {
         }
 
         if (bonusExist) {
-            this.bonus.print(graphics);
+            this.freeze.print(graphics);
         }
     }
 
@@ -204,7 +204,7 @@ public class GameState extends State implements Updatable, Printable {
                 GameWindow.WINDOW_HEIGHT - Eagle.EAGLE_HEIGHT);
     }
 
-    private void initPlayerTanks(int numberOfPlayers, InputHandler[] inputHandlers) {
+    private void initPlayerTanks(int numberOfPlayers, PlayerInputHandler[] inputHandlers) {
 
         this.playerTanks = new PlayerTank[numberOfPlayers];
         PlayerTank firstPlayer = new FirstPlayerTank(inputHandlers[0]);
@@ -235,7 +235,7 @@ public class GameState extends State implements Updatable, Printable {
                 if (timeToGetBonus == 3) {
                     int bonusX = this.enemyTanks.get(i).getX() + EnemyTank.ENEMY_TANK_WIDTH / 4;
                     int bonusY = this.enemyTanks.get(i).getY() + EnemyTank.ENEMY_TANK_HEIGHT / 4;
-                    this.bonus = new Bonus(bonusX, bonusY);
+                    this.freeze = new Freeze(bonusX, bonusY);
                     bonusExist = true;
                     timeToGetBonus = 0;
                 }
@@ -298,11 +298,11 @@ public class GameState extends State implements Updatable, Printable {
 
         if (bonusExist) {
             for (int i = 0; i < this.playerTanks.length; i++) {
-                if (this.playerTanks[i].intersect(this.bonus.getBoundingBox())) {
+                if (this.playerTanks[i].intersect(this.freeze.getBoundingBox())) {
                     enemiesFreeze = true;
                     bonusExist = false;
                     bonusCounter = 0;
-                    this.bonus = null;
+                    this.freeze = null;
                     break;
                 }
             }
@@ -316,9 +316,9 @@ public class GameState extends State implements Updatable, Printable {
         for (int i = 0; i < this.playerTanks.length; i++) {
             for (EnemyTank enemyTank : this.enemyTanks) {
                 if (enemyTank.intersect(this.playerTanks[i].getBoundingBox())) {
-                    if (!toDealWithCollision.contains(enemyTank) && !toUpdate.contains(enemyTank)) {
+                    if (!toDealWithCollision.contains(enemyTank)) {
                         toDealWithCollision.add(enemyTank);
-                        //toUpdate.remove(enemyTank);
+                        toUpdate.remove(enemyTank);
                     }
                 } else {
                     if (!toUpdate.contains(enemyTank) && !toDealWithCollision.contains(enemyTank)) {
@@ -333,7 +333,9 @@ public class GameState extends State implements Updatable, Printable {
             for (Brick brick : brickWall.getBricks()) {
                 for (EnemyTank enemyTank : this.enemyTanks) {
                     if (enemyTank.intersect(brick.getBoundingBox())) {
-                        toDealWithCollision.add(enemyTank);
+                        if (!toDealWithCollision.contains(enemyTank)) {
+                            toDealWithCollision.add(enemyTank);
+                        }
                         toUpdate.remove(enemyTank);
                     }
                 }
@@ -344,7 +346,9 @@ public class GameState extends State implements Updatable, Printable {
             for (Steel steel : steelWall.getSteel()) {
                 for (EnemyTank enemyTank : this.enemyTanks) {
                     if (enemyTank.intersect(steel.getBoundingBox())) {
-                        toDealWithCollision.add(enemyTank);
+                        if (!toDealWithCollision.contains(enemyTank)) {
+                            toDealWithCollision.add(enemyTank);
+                        }
                         toUpdate.remove(enemyTank);
                     }
                 }
@@ -355,8 +359,12 @@ public class GameState extends State implements Updatable, Printable {
             EnemyTank enemyTank = this.enemyTanks.get(i);
             for (int j = i + 1; j < this.enemyTanks.size(); j++) {
                 if (enemyTank.intersect(this.enemyTanks.get(j).getBoundingBox())) {
-                    toDealWithCollision.add(enemyTank);
-                    toDealWithCollision.add(this.enemyTanks.get(j));
+                    if (!toDealWithCollision.contains(enemyTank)) {
+                        toDealWithCollision.add(enemyTank);
+                    }
+                    if (!toDealWithCollision.contains(this.enemyTanks.get(j))) {
+                        toDealWithCollision.add(this.enemyTanks.get(j));
+                    }
                     toUpdate.remove(enemyTank);
                     toUpdate.remove(this.enemyTanks.get(j));
                 }
@@ -441,6 +449,21 @@ public class GameState extends State implements Updatable, Printable {
             }
         }
 
+        for (PlayerTank playerTank : this.playerTanks) {
+            Bomb bombToRemove = null;
+            for (Bomb bomb : playerTank.getBombs()) {
+                for (EnemyTank enemyTank : this.enemyTanks) {
+                    if (bomb.intersect(enemyTank.getBoundingBox())) {
+                        enemyTank.decreaseHealth(bomb.getDamage());
+                        bombToRemove = bomb;
+                        break;
+                    }
+                }
+            }
+            if (bombToRemove != null) {
+                playerTank.getBombs().remove(bombToRemove);
+            }
+        }
         for (int i = 0; i < this.playerTanks.length; i++) {
             List<Bullet> bulletsToRemove = toRemove.get(i);
             this.playerTanks[i].getBullets().removeAll(bulletsToRemove);
@@ -616,7 +639,7 @@ public class GameState extends State implements Updatable, Printable {
             if (bonusCounter == 300) {
                 bonusCounter = 0;
                 bonusExist = false;
-                this.bonus = null;
+                this.freeze = null;
             }
         }
     }

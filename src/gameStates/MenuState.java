@@ -7,6 +7,9 @@ import contracts.inputHandler.MenuInputHandler;
 import core.GameWindow;
 import entities.Message;
 import images.Images;
+import input.FirstPlayerInputHandler;
+import input.InputHandler;
+import input.SecondPlayerInputHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +33,8 @@ public class MenuState extends State implements Updatable, Printable {
     private int[] positions;
 
     private MenuInputHandler menuInputHandler;
+    private InputHandler firstPlayerInputHandler;
+    private InputHandler secondPlayerInputHandler;
 
     private int index;
 
@@ -102,13 +107,19 @@ public class MenuState extends State implements Updatable, Printable {
     }
 
     private void executeOnePlayerCommand() {
-        StateManager.setCurrentState(new OnePlayerState(this.gameEngine, this.gameEngine.getFirstPlayerInputHandler()));
+        this.firstPlayerInputHandler =
+                new FirstPlayerInputHandler(this.gameEngine.getGameWindow().getFrame());
+        StateManager.setCurrentState(new OnePlayerState(this.gameEngine, this.firstPlayerInputHandler));
     }
 
     private void executeTwoPlayersCommand() {
+        this.firstPlayerInputHandler =
+                new FirstPlayerInputHandler(this.gameEngine.getGameWindow().getFrame());
+        this.secondPlayerInputHandler =
+                new SecondPlayerInputHandler(this.gameEngine.getGameWindow().getFrame());
         StateManager.setCurrentState(new TwoPlayerState(this.gameEngine,
-                this.gameEngine.getFirstPlayerInputHandler(),
-                this.gameEngine.getSecondPlayerInputHandler()));
+                this.firstPlayerInputHandler,
+                this.secondPlayerInputHandler));
     }
 
     private void executeHowToPlayCommand() {

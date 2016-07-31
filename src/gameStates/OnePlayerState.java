@@ -1,12 +1,12 @@
 package gameStates;
 
 import contracts.core.Engine;
-import input.InputHandler;
+import contracts.inputHandler.PlayerInputHandler;
 
 public class OnePlayerState extends GameState {
 
     public OnePlayerState(Engine gameEngine,
-                          InputHandler firstPlayerInputHandler) {
+                          PlayerInputHandler firstPlayerInputHandler) {
         super(gameEngine, 1, 10, firstPlayerInputHandler);
     }
 }

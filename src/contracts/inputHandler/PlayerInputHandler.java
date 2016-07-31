@@ -14,5 +14,7 @@ public interface PlayerInputHandler extends KeyListener {
 
     boolean hasShoot();
 
+    boolean dropBomb();
+
     int getLastDirection();
 }

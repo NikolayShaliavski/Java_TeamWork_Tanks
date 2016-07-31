@@ -40,6 +40,10 @@ public class FirstPlayerInputHandler extends InputHandler implements KeyListener
         if (keyCode == KeyEvent.VK_SPACE) {
             super.setShoot(false);
         }
+
+        if (keyCode == KeyEvent.VK_M) {
+            super.setBomb(false);
+        }
     }
 
     private void checkKeyPressed(int keyCode) {
@@ -76,5 +80,10 @@ public class FirstPlayerInputHandler extends InputHandler implements KeyListener
         if (keyCode == KeyEvent.VK_SPACE){
             super.setShoot(true);
         }
+        if (keyCode == KeyEvent.VK_M) {
+            super.setBomb(true);
+        }
     }
+
+
 }

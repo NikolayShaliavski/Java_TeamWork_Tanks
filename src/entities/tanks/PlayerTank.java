@@ -3,14 +3,17 @@ package entities.tanks;
 import contracts.Intersectable;
 import contracts.Printable;
 import contracts.Updatable;
+import contracts.inputHandler.PlayerInputHandler;
 import contracts.models.Tank;
 import core.GameWindow;
+import entities.bonuses.Bomb;
 import entities.bullets.Bullet;
 import images.Images;
-import input.InputHandler;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerTank extends AbstractTank implements Tank, Updatable, Intersectable, Printable {
 
@@ -19,17 +22,22 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
 
     private static final int PLAYER_TANK_SPEED = 2;
     private static final int PLAYER_TANK_BULLET_SPEED = 4;
-    private static final int PLAYER_TANK_INITIAL_HEALTH = 10;
+    private static final int PLAYER_TANK_INITIAL_HEALTH = 100;
     private static final int PLAYER_TANK_INITIAL_DAMAGE = 10;
 
-    private InputHandler inputHandler;
+    private PlayerInputHandler inputHandler;
+
+    private List<Bomb> bombs;
+    private int bombsDropped;
 
     private int collisionDirection = -1;
 
     private boolean hasShot;
     private int shootTicks;
 
-    public PlayerTank(int x, int y, InputHandler inputHandler) {
+    private boolean hasDroppedBomb;
+
+    public PlayerTank(int x, int y, PlayerInputHandler inputHandler) {
         super(x, y,
                 PLAYER_TANK_WIDTH,
                 PLAYER_TANK_HEIGHT,
@@ -38,6 +46,12 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
                 PLAYER_TANK_INITIAL_DAMAGE);
         this.shootTicks = 50;
         this.inputHandler = inputHandler;
+        this.bombs = new ArrayList<>();
+        this.bombsDropped = 0;
+    }
+
+    public List<Bomb> getBombs() {
+        return this.bombs;
     }
 
     @Override
@@ -48,13 +62,17 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
         this.move();
         this.performShooting();
 
+        this.dropBomb();
+
         this.removeOutOfRangeBullets();
         this.getBullets().forEach(Bullet::update);
     }
 
-
     @Override
     public void print(Graphics graphics) {
+        for (Bomb bomb : this.getBombs()) {
+            bomb.print(graphics);
+        }
         if (!this.inputHandler.isUp() &&
                 !this.inputHandler.isDown() &&
                 !this.inputHandler.isRight() &&
@@ -73,7 +91,6 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
         } else if (this.inputHandler.isRight()) {
             graphics.drawImage(Images.playerTankRight, this.x, this.y, null);
         }
-
         // Bounding box
         graphics.setColor(Color.WHITE);
         graphics.drawRect(
@@ -89,7 +106,7 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     }
 
     @Override
-        public void dealWithCollision() {
+    public void dealWithCollision() {
 
         this.direction = this.inputHandler.getLastDirection();
         this.collisionDirection = this.direction;
@@ -150,6 +167,19 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
 
         Bullet bullet = new Bullet(bulletX, bulletY, direction, PLAYER_TANK_BULLET_SPEED);
         this.getBullets().add(bullet);
+    }
+
+    private void dropBomb() {
+        if (this.inputHandler.dropBomb() && !this.hasDroppedBomb) {
+            if (this.bombsDropped < 2) {
+                Bomb bomb = new Bomb(this.getX() + 5, this.getY() + 5);
+                this.getBombs().add(bomb);
+                this.bombsDropped++;
+                this.hasDroppedBomb = true;
+            }
+        } else if (!this.inputHandler.dropBomb()) {
+            this.hasDroppedBomb = false;
+        }
     }
 
     private void move() {
