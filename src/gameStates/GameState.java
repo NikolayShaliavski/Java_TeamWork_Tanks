@@ -15,7 +15,6 @@ import entities.obsticles.bricks.Steel;
 import entities.obsticles.walls.BrickWall;
 import entities.obsticles.walls.SteelWall;
 import entities.tanks.*;
-import input.InputHandler;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
-public class GameState extends State implements Updatable, Printable {
+public abstract class GameState extends State implements Updatable, Printable {
 
     private Eagle eagle;
     private PlayerTank[] playerTanks;
