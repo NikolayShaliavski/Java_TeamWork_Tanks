@@ -9,6 +9,7 @@ import images.Images;
 import java.awt.*;
 
 public class EndGameState extends State implements Updatable, Printable {
+
     private String message;
 
     public EndGameState(Engine gameEngine, String message) {
@@ -23,9 +24,9 @@ public class EndGameState extends State implements Updatable, Printable {
 
     @Override
     public void print(Graphics graphics) {
-        graphics.drawImage(Images.menuBack, 0, 0, GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT, null);
+        graphics.drawImage(Images.menuBackground, 0, 0, GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT, null);
         int x = (GameWindow.WINDOW_WIDTH / 2) - (GameWindow.WINDOW_WIDTH / 4);
-        int y = GameWindow.WINDOW_HEIGHT / 3;
+        int y = GameWindow.WINDOW_HEIGHT / 2;
 
         graphics.setFont(new Font("Modern No. 20", Font.ITALIC, 60));
         if (this.message.equals("You Won!")) {

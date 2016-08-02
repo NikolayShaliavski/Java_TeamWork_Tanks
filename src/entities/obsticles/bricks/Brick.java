@@ -5,7 +5,11 @@ import images.Images;
 
 import java.awt.*;
 
+/**
+ * Basic brick obstacle. It can be destroyed.
+ */
 public class Brick extends AbstractEntity {
+
     public static final int BRICK_WIDTH = Images.brick.getWidth();
     public static final int BRICK_HEIGHT = Images.brick.getHeight();
 
@@ -17,8 +21,8 @@ public class Brick extends AbstractEntity {
     public void print(Graphics graphics) {
 //        // Bounding box
 //        graphics.setColor(Color.white);
-//        graphics.drawRect(this.x, this.y, this.width, this.height);
-        graphics.drawImage(Images.brick, this.x, this.y, null);
+//        graphics.drawRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        graphics.drawImage(Images.brick, this.getX(), this.getY(), null);
     }
 
     @Override

@@ -7,7 +7,11 @@ import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class that contains all the obstacles on the game field.
+ */
 public class BrickField implements Printable {
+
     private Set<BrickWall> brickWalls;
     private Set<SteelWall> steelWallsWalls;
 

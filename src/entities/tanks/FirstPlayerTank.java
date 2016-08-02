@@ -2,7 +2,6 @@ package entities.tanks;
 
 import contracts.inputHandler.PlayerInputHandler;
 import core.GameWindow;
-import input.InputHandler;
 
 public class FirstPlayerTank extends PlayerTank {
 

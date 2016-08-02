@@ -4,6 +4,13 @@ import images.Images;
 
 import java.awt.*;
 
+/**
+ * This item is dropped by the the enemy tank, when the player kills
+ * 3 enemies.
+ * <p>
+ * When the player passes through this item, the currently spawn enemies,
+ * freeze for some time. During that time they cannot do nothing.
+ */
 public class Freeze extends Bonus {
 
     private static final int FREEZE_WIDTH = Images.freeze.getWidth();
@@ -15,6 +22,6 @@ public class Freeze extends Bonus {
 
     @Override
     public void print(Graphics graphics) {
-        graphics.drawImage(Images.freeze, this.x, this.y, FREEZE_WIDTH, FREEZE_HEIGHT, null);
+        graphics.drawImage(Images.freeze, this.getX(), this.getY(), FREEZE_WIDTH, FREEZE_HEIGHT, null);
     }
 }

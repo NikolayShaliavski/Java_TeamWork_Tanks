@@ -1,10 +1,19 @@
-package input;
+package inputHandlers;
 
 import contracts.inputHandler.MenuInputHandler;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
+/**
+ * Handles the input only at the menu state.
+ * The keys for moving and selecting options are:
+ * <ul>
+ * <li>Up - <b>Up Arrow</b></li>
+ * <li>Down - <b>Down Arrow</b></li>
+ * <li>Choosing option - <b>Enter</b></li>
+ * </ul>
+ */
 public class MenuInputHandlerImpl implements MenuInputHandler {
 
     private boolean up;
@@ -36,22 +45,17 @@ public class MenuInputHandlerImpl implements MenuInputHandler {
         this.checkKeyPressed(keyCode);
     }
 
-
     @Override
     public void keyReleased(KeyEvent key) {
         int keyCode = key.getKeyCode();
         this.checkKeyReleased(keyCode);
-
     }
-
-
 
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
     private void checkKeyPressed(int keyCode) {
-
         if (keyCode == KeyEvent.VK_UP) {
             this.up = true;
             this.down = false;
@@ -64,7 +68,6 @@ public class MenuInputHandlerImpl implements MenuInputHandler {
     }
 
     private void checkKeyReleased(int keyCode) {
-
         if (keyCode == KeyEvent.VK_UP) {
             this.up = false;
         } else if (keyCode == KeyEvent.VK_DOWN) {

@@ -1,4 +1,4 @@
-package input;
+package inputHandlers;
 
 import contracts.inputHandler.PlayerInputHandler;
 
@@ -66,7 +66,7 @@ public abstract class InputHandler implements PlayerInputHandler {
     }
 
     @Override
-    public boolean dropBomb() {
+    public boolean hasDroppedBomb() {
         return this.bomb;
     }
 

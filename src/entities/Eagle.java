@@ -28,7 +28,7 @@ public class Eagle extends AbstractEntity implements Destroyable, Printable, Int
 
     @Override
     public void print(Graphics graphics) {
-        graphics.drawImage(Images.eagle, this.x, this.y, null);
+        graphics.drawImage(Images.eagle, this.getX(), this.getY(), null);
     }
 
     @Override

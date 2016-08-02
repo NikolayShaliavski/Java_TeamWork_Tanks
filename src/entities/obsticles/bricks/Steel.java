@@ -5,7 +5,11 @@ import images.Images;
 
 import java.awt.*;
 
+/**
+ * Steel obstacle. It cannot be destroyed.
+ */
 public class Steel extends AbstractEntity {
+
     public static final int STEEL_WIDTH = Images.steel.getWidth();
     public static final int STEEL_HEIGHT = Images.steel.getHeight();
 
@@ -15,14 +19,14 @@ public class Steel extends AbstractEntity {
 
     @Override
     public boolean intersect(Rectangle rectangle) {
-//        // Bounding box
-//        graphics.setColor(Color.white);
-//        graphics.drawRect(this.x, this.y, this.width, this.height);
         return this.getBoundingBox().intersects(rectangle);
     }
 
     @Override
     public void print(Graphics graphics) {
-        graphics.drawImage(Images.steel, this.x, this.y, null);
+//        // Bounding box
+//        graphics.setColor(Color.white);
+//        graphics.drawRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        graphics.drawImage(Images.steel, this.getX(), this.getY(), null);
     }
 }

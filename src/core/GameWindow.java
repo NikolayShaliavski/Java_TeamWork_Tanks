@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameWindow extends JFrame {
+
     public static final int WINDOW_WIDTH = 620;
     public static final int WINDOW_HEIGHT = 460;
 

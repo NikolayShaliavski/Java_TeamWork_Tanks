@@ -1,12 +1,23 @@
-package input;
+package inputHandlers;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class FirstPlayerInputHandler extends InputHandler implements KeyListener {
+/**
+ * Handles the input only for the second player.
+ * The keys for moving and shooting with the first player are:
+ * <ul>
+ * <li>Up - <b>Up Arrow</b></li>
+ * <li>Down - <b>Down Arrow</b></li>
+ * <li>Left - <b>Left Arrow</b></li>
+ * <li>Right - <b>Right Arrow</b></li>
+ * <li>Shoot - <b>Control</b></li>
+ * <li>Dropping bomb - <b>Enter</b></li>
+ * </ul>
+ */
+public class SecondPlayerInputHandler extends InputHandler {
 
-    public FirstPlayerInputHandler(Frame frame) {
+    public SecondPlayerInputHandler(Frame frame) {
         super(frame);
     }
 
@@ -37,11 +48,11 @@ public class FirstPlayerInputHandler extends InputHandler implements KeyListener
             super.setLeft(false);
         }
 
-        if (keyCode == KeyEvent.VK_SPACE) {
+        if (keyCode == KeyEvent.VK_CONTROL) {
             super.setShoot(false);
         }
 
-        if (keyCode == KeyEvent.VK_M) {
+        if (keyCode == KeyEvent.VK_ENTER) {
             super.setBomb(false);
         }
     }
@@ -77,13 +88,11 @@ public class FirstPlayerInputHandler extends InputHandler implements KeyListener
             super.setLastDirection(4);
         }
 
-        if (keyCode == KeyEvent.VK_SPACE){
+        if (keyCode == KeyEvent.VK_CONTROL) {
             super.setShoot(true);
         }
-        if (keyCode == KeyEvent.VK_M) {
+        if (keyCode == KeyEvent.VK_ENTER) {
             super.setBomb(true);
         }
     }
-
-
 }

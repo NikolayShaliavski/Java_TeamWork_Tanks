@@ -12,8 +12,4 @@ public interface Engine extends Runnable, Updatable, Printable {
     Graphics getGraphics();
 
     GameWindow getGameWindow();
-
-//    InputHandler getFirstPlayerInputHandler();
-//
-//    InputHandler getSecondPlayerInputHandler();
 }

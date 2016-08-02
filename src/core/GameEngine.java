@@ -8,12 +8,13 @@ import gameStates.MenuState;
 import gameStates.State;
 import gameStates.StateManager;
 import images.Images;
-import input.*;
+import inputHandlers.*;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class GameEngine implements Engine, Runnable, Updatable, Printable {
+
     private GameWindow gameWindow;
 
     public Graphics graphics;
@@ -21,8 +22,6 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
 
     private State currentGameState;
 
-//    private InputHandler firstPayerInputHandler;
-//    private InputHandler secondPlayerInputHandler;
     private MenuInputHandler menuInputHandler;
 
     private boolean isRunning;
@@ -32,16 +31,6 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
         this.init();
         this.isRunning = true;
     }
-
-//    @Override
-//    public InputHandler getFirstPlayerInputHandler() {
-//        return this.firstPayerInputHandler;
-//    }
-//
-//    @Override
-//    public InputHandler getSecondPlayerInputHandler() {
-//        return this.secondPlayerInputHandler;
-//    }
 
     @Override
     public void run() {
@@ -110,8 +99,6 @@ public class GameEngine implements Engine, Runnable, Updatable, Printable {
 
         Images.loadImages();
 
-//        this.firstPayerInputHandler = new FirstPlayerInputHandler(this.gameWindow.getFrame());
-//        this.secondPlayerInputHandler = new SecondPlayerInputHandler(this.gameWindow.getFrame());
         this.menuInputHandler = new MenuInputHandlerImpl(this.gameWindow.getFrame());
 
         this.currentGameState = new MenuState(this, this.menuInputHandler);

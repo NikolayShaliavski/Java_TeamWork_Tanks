@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BrickWall extends AbstractEntity implements Printable {
+
     private Set<Brick> bricks;
 
     public BrickWall(int x, int y, int rows, int cols, boolean fromUpToDown) {
@@ -27,7 +28,7 @@ public class BrickWall extends AbstractEntity implements Printable {
     @Override
     public boolean intersect(Rectangle rectangle) {
         for (Brick brick : this.bricks) {
-            if (brick.intersect(rectangle)){
+            if (brick.intersect(rectangle)) {
                 return true;
             }
         }
@@ -52,13 +53,14 @@ public class BrickWall extends AbstractEntity implements Printable {
                 this.bricks.add(brick);
 
                 x -= Brick.BRICK_WIDTH;
-                this.width += Brick.BRICK_WIDTH;
+                this.setWidth(this.getWidth() + Brick.BRICK_WIDTH);
             }
+
             y -= Brick.BRICK_HEIGHT;
         }
 
-        this.width = Brick.BRICK_WIDTH * cols;
-        this.height = Brick.BRICK_HEIGHT * rows;
+        this.setWidth(Brick.BRICK_WIDTH * cols);
+        this.setHeight(Brick.BRICK_HEIGHT * rows);
     }
 
     private void buildWallFromUpToDown(int startX, int startY, int rows, int cols) {
@@ -75,8 +77,8 @@ public class BrickWall extends AbstractEntity implements Printable {
             y += Brick.BRICK_HEIGHT;
         }
 
-        this.width = Brick.BRICK_WIDTH * cols;
-        this.height = Brick.BRICK_HEIGHT * rows;
+        this.setWidth(Brick.BRICK_WIDTH * cols);
+        this.setHeight(Brick.BRICK_HEIGHT * rows);
     }
 
     public Set<Brick> getBricks() {

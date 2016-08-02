@@ -5,16 +5,14 @@ import contracts.Updatable;
 import contracts.core.Engine;
 import contracts.inputHandler.MenuInputHandler;
 import core.GameWindow;
-import entities.Message;
 import images.Images;
-import input.FirstPlayerInputHandler;
-import input.InputHandler;
-import input.SecondPlayerInputHandler;
+import inputHandlers.FirstPlayerInputHandler;
+import inputHandlers.InputHandler;
+import inputHandlers.SecondPlayerInputHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
-import java.util.List;
 
 public class MenuState extends State implements Updatable, Printable {
 
@@ -29,7 +27,6 @@ public class MenuState extends State implements Updatable, Printable {
 
     private static final int DEFAULT_TANK_Y = 140;
 
-    private List<Message> messages;
     private int[] positions;
 
     private MenuInputHandler menuInputHandler;
@@ -37,7 +34,6 @@ public class MenuState extends State implements Updatable, Printable {
     private InputHandler secondPlayerInputHandler;
 
     private int index;
-
     private boolean canMove;
 
     public MenuState(Engine gameEngine,
@@ -61,6 +57,7 @@ public class MenuState extends State implements Updatable, Printable {
         if (canMove && this.menuInputHandler.isEnter()) {
             this.executeCommand();
         }
+
         if (!this.menuInputHandler.isUp() && !this.menuInputHandler.isDown()) {
             this.canMove = true;
         }
@@ -69,8 +66,7 @@ public class MenuState extends State implements Updatable, Printable {
     @Override
     public void print(Graphics graphics) {
         graphics.setColor(Color.black);
-        //graphics.fillRect(0, 0, GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT);
-        graphics.drawImage(Images.menuBack, 0, 0, GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT, null);
+        graphics.drawImage(Images.menuBackground, 0, 0, GameWindow.WINDOW_WIDTH, GameWindow.WINDOW_HEIGHT, null);
         graphics.drawImage(Images.playerTankRight, 170, this.positions[index], null);
 
         Font font = new Font("Modern No. 20", Font.ITALIC, 25);

@@ -7,8 +7,9 @@ import contracts.Printable;
 import java.awt.*;
 
 public abstract class AbstractEntity implements Entity, Printable, Intersectable {
-    protected int x, y;
-    protected int width, height;
+
+    private int x, y;
+    private int width, height;
 
     private Rectangle boundingBox;
 
@@ -24,10 +25,6 @@ public abstract class AbstractEntity implements Entity, Printable, Intersectable
     @Override
     public Rectangle getBoundingBox() {
         return this.boundingBox;
-    }
-
-    protected void setBoundingBox(int x, int y, int width, int height) {
-        this.boundingBox.setBounds(x, y, width, height);
     }
 
     @Override
@@ -48,5 +45,25 @@ public abstract class AbstractEntity implements Entity, Printable, Intersectable
     @Override
     public int getHeight() {
         return this.height;
+    }
+
+    protected void setX(int x) {
+        this.x = x;
+    }
+
+    protected void setY(int y) {
+        this.y = y;
+    }
+
+    protected void setWidth(int width) {
+        this.width = width;
+    }
+
+    protected void setHeight(int height) {
+        this.height = height;
+    }
+
+    protected void setBoundingBox(int x, int y, int width, int height) {
+        this.boundingBox.setBounds(x, y, width, height);
     }
 }

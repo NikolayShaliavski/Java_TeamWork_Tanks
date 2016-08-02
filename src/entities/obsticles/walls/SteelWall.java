@@ -53,13 +53,14 @@ public class SteelWall extends AbstractEntity implements Printable {
                 this.steel.add(steel);
 
                 x -= Brick.BRICK_WIDTH;
-                this.width += Brick.BRICK_WIDTH;
+                this.setWidth(this.getWidth() + Brick.BRICK_WIDTH);
             }
+
             y -= Brick.BRICK_HEIGHT;
         }
 
-        this.width = Brick.BRICK_WIDTH * cols;
-        this.height = Brick.BRICK_HEIGHT * rows;
+        this.setWidth(Brick.BRICK_WIDTH * cols);
+        this.setHeight(Brick.BRICK_HEIGHT * rows);
     }
 
     private void buildWallFromUpToDown(int startX, int startY, int rows, int cols) {
@@ -76,8 +77,8 @@ public class SteelWall extends AbstractEntity implements Printable {
             y += Brick.BRICK_HEIGHT;
         }
 
-        this.width = Brick.BRICK_WIDTH * cols;
-        this.height = Brick.BRICK_HEIGHT * rows;
+        this.setWidth(Brick.BRICK_WIDTH * cols);
+        this.setHeight(Brick.BRICK_HEIGHT * rows);
     }
 
     public Set<Steel> getSteel() {

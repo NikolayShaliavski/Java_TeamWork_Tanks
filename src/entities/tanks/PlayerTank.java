@@ -15,14 +15,15 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerTank extends AbstractTank implements Tank, Updatable, Intersectable, Printable {
+public abstract class PlayerTank extends AbstractTank
+        implements Tank, Updatable, Intersectable, Printable {
 
     public static final int PLAYER_TANK_WIDTH = Images.playerTankUp.getWidth();
     public static final int PLAYER_TANK_HEIGHT = Images.playerTankUp.getHeight();
 
     private static final int PLAYER_TANK_SPEED = 2;
     private static final int PLAYER_TANK_BULLET_SPEED = 4;
-    private static final int PLAYER_TANK_INITIAL_HEALTH = 100;
+    private static final int PLAYER_TANK_INITIAL_HEALTH = 10;
     private static final int PLAYER_TANK_INITIAL_DAMAGE = 10;
 
     private PlayerInputHandler inputHandler;
@@ -37,7 +38,7 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
 
     private boolean hasDroppedBomb;
 
-    public PlayerTank(int x, int y, PlayerInputHandler inputHandler) {
+    protected PlayerTank(int x, int y, PlayerInputHandler inputHandler) {
         super(x, y,
                 PLAYER_TANK_WIDTH,
                 PLAYER_TANK_HEIGHT,
@@ -48,10 +49,6 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
         this.inputHandler = inputHandler;
         this.bombs = new ArrayList<>();
         this.bombsDropped = 0;
-    }
-
-    public List<Bomb> getBombs() {
-        return this.bombs;
     }
 
     @Override
@@ -70,38 +67,40 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
 
     @Override
     public void print(Graphics graphics) {
-        for (Bomb bomb : this.getBombs()) {
-            bomb.print(graphics);
-        }
         if (!this.inputHandler.isUp() &&
                 !this.inputHandler.isDown() &&
                 !this.inputHandler.isRight() &&
                 !this.inputHandler.isLeft()) {
             // Default direction - firstPlayerUp, when no key is pressed
             BufferedImage image = getPlayerDirectionImage(this.inputHandler.getLastDirection());
-            graphics.drawImage(image, this.x, this.y, null);
+            graphics.drawImage(image, this.getX(), this.getY(), null);
             return;
 
         } else if (this.inputHandler.isUp()) {
-            graphics.drawImage(Images.playerTankUp, this.x, this.y, null);
+            graphics.drawImage(Images.playerTankUp, this.getX(), this.getY(), null);
         } else if (this.inputHandler.isDown()) {
-            graphics.drawImage(Images.playerTankDown, this.x, this.y, null);
+            graphics.drawImage(Images.playerTankDown, this.getX(), this.getY(), null);
         } else if (this.inputHandler.isLeft()) {
-            graphics.drawImage(Images.playerTankLeft, this.x, this.y, null);
+            graphics.drawImage(Images.playerTankLeft, this.getX(), this.getY(), null);
         } else if (this.inputHandler.isRight()) {
-            graphics.drawImage(Images.playerTankRight, this.x, this.y, null);
+            graphics.drawImage(Images.playerTankRight, this.getX(), this.getY(), null);
         }
-        // Bounding box
-        graphics.setColor(Color.WHITE);
-        graphics.drawRect(
-                (int) this.getBoundingBox().getX(),
-                (int) this.getBoundingBox().getY(),
-                (int) this.getBoundingBox().getWidth(),
-                (int) this.getBoundingBox().getHeight());
+
+//        //Bounding box
+//        graphics.setColor(Color.WHITE);
+//        graphics.drawRect(
+//                (int) this.getBoundingBox().getX(),
+//                (int) this.getBoundingBox().getY(),
+//                (int) this.getBoundingBox().getWidth(),
+//                (int) this.getBoundingBox().getHeight());
 
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < this.getBullets().size(); i++) {
             this.getBullets().get(i).print(graphics);
+        }
+
+        for (Bomb bomb : this.getBombs()) {
+            bomb.print(graphics);
         }
     }
 
@@ -122,27 +121,35 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     @Override
     public boolean intersect(Rectangle rectangle) {
         if (this.inputHandler.isUp()) {
-            this.setBoundingBox(this.x, this.y - this.getSpeed(), this.width, this.height);
+            this.setBoundingBox(
+                    this.getX(), this.getY() - this.getSpeed(), this.getWidth(), this.getHeight());
         } else if (this.inputHandler.isRight()) {
-            this.setBoundingBox(this.x + this.getSpeed(), this.y, this.width, this.height);
+            this.setBoundingBox(
+                    this.getX() + this.getSpeed(), this.getY(), this.getWidth(), this.getHeight());
         } else if (this.inputHandler.isDown()) {
-            this.setBoundingBox(this.x, this.y + this.getSpeed(), this.width, this.height);
+            this.setBoundingBox(
+                    this.getX(), this.getY() + this.getSpeed(), this.getWidth(), this.getHeight());
         } else if (this.inputHandler.isLeft()) {
-            this.setBoundingBox(this.x - this.getSpeed(), this.y, this.width, this.height);
+            this.setBoundingBox(
+                    this.getX() - this.getSpeed(), this.getY(), this.getWidth(), this.getHeight());
         }
 
         return this.getBoundingBox().intersects(rectangle);
+    }
+
+    public List<Bomb> getBombs() {
+        return this.bombs;
     }
 
     private void performShooting() {
         if (this.inputHandler.hasShoot() && !hasShot) {
             if (this.shootTicks > 60) {
                 this.shoot();
-                hasShot = true;
+                this.hasShot = true;
                 this.shootTicks = 0;
             }
         } else if (!this.inputHandler.hasShoot()) {
-            hasShot = false;
+            this.hasShot = false;
         }
 
         this.shootTicks++;
@@ -152,17 +159,17 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
         int bulletX = 0;
         int bulletY = 0;
         if (this.direction == 1) {
-            bulletX = (this.x + (PLAYER_TANK_WIDTH / 2 - 6));
-            bulletY = this.y;
+            bulletX = (this.getX() + (PLAYER_TANK_WIDTH / 2 - 6));
+            bulletY = this.getY();
         } else if (this.direction == 2) {
-            bulletX = (this.x + (PLAYER_TANK_WIDTH / 2 - 6));
-            bulletY = (this.y + PLAYER_TANK_HEIGHT);
+            bulletX = (this.getX() + (PLAYER_TANK_WIDTH / 2 - 6));
+            bulletY = (this.getY() + PLAYER_TANK_HEIGHT);
         } else if (this.direction == 3) {
-            bulletX = this.x;
-            bulletY = (this.y + (PLAYER_TANK_HEIGHT / 2 - 6));
+            bulletX = this.getX();
+            bulletY = (this.getY() + (PLAYER_TANK_HEIGHT / 2 - 6));
         } else if (this.direction == 4) {
-            bulletX = (this.x + PLAYER_TANK_WIDTH);
-            bulletY = (this.y + (PLAYER_TANK_HEIGHT / 2 - 6));
+            bulletX = (this.getX() + PLAYER_TANK_WIDTH);
+            bulletY = (this.getY() + (PLAYER_TANK_HEIGHT / 2 - 6));
         }
 
         Bullet bullet = new Bullet(bulletX, bulletY, direction, PLAYER_TANK_BULLET_SPEED);
@@ -170,34 +177,34 @@ public class PlayerTank extends AbstractTank implements Tank, Updatable, Interse
     }
 
     private void dropBomb() {
-        if (this.inputHandler.dropBomb() && !this.hasDroppedBomb) {
+        if (this.inputHandler.hasDroppedBomb() && !this.hasDroppedBomb) {
             if (this.bombsDropped < 2) {
                 Bomb bomb = new Bomb(this.getX() + 5, this.getY() + 5);
                 this.getBombs().add(bomb);
                 this.bombsDropped++;
                 this.hasDroppedBomb = true;
             }
-        } else if (!this.inputHandler.dropBomb()) {
+        } else if (!this.inputHandler.hasDroppedBomb()) {
             this.hasDroppedBomb = false;
         }
     }
 
     private void move() {
-        if (this.inputHandler.isUp() && this.y - this.getSpeed() > 0 && this.collisionDirection != 1) {
-            this.y -= this.getSpeed();
+        if (this.inputHandler.isUp() && this.getY() - this.getSpeed() > 0 && this.collisionDirection != 1) {
+            this.setY(this.getY() - this.getSpeed());
         } else if (this.inputHandler.isDown() &&
-                this.y + PLAYER_TANK_HEIGHT + this.getSpeed() <= GameWindow.WINDOW_HEIGHT && this.collisionDirection
+                this.getY() + PLAYER_TANK_HEIGHT + this.getSpeed() <= GameWindow.WINDOW_HEIGHT && this.collisionDirection
                 != 2) {
-            this.y += this.getSpeed();
-        } else if (this.inputHandler.isLeft() && this.x - this.getSpeed() > 0 && this.collisionDirection != 3) {
-            this.x -= this.getSpeed();
+            this.setY(this.getY() + this.getSpeed());
+        } else if (this.inputHandler.isLeft() && this.getX() - this.getSpeed() > 0 && this.collisionDirection != 3) {
+            this.setX(this.getX() - this.getSpeed());
         } else if (this.inputHandler.isRight() &&
-                this.x + PLAYER_TANK_WIDTH + this.getSpeed() <= GameWindow.WINDOW_WIDTH &&
+                this.getX() + PLAYER_TANK_WIDTH + this.getSpeed() <= GameWindow.WINDOW_WIDTH &&
                 this.collisionDirection != 4) {
-            this.x += this.getSpeed();
+            this.setX(this.getX() + this.getSpeed());
         }
 
-        this.getBoundingBox().setBounds(this.x, this.y, this.width, this.height);
+        this.getBoundingBox().setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     private BufferedImage getPlayerDirectionImage(int lastDirection) {

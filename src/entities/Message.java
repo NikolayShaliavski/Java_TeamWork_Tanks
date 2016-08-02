@@ -29,10 +29,11 @@ public class Message extends AbstractEntity {
     public void print(Graphics graphics) {
         graphics.setColor(Color.WHITE);
         graphics.setFont(this.font);
-        graphics.drawString(this.message, this.x, this.y);
+        graphics.drawString(this.message, this.getX(), this.getY());
 
         int fontHeight = graphics.getFontMetrics().getHeight();
-        this.setBoundingBox(this.x, this.y - fontHeight + 5, this.width, this.height);
+        this.setBoundingBox(
+                this.getX(), this.getY() - fontHeight + 5, this.getWidth(), this.getHeight());
 
         //// Message bounding box
 //        graphics.drawRect(
@@ -48,8 +49,8 @@ public class Message extends AbstractEntity {
 
     private void calcWidthAndHeight(Graphics graphics, Font font) {
         graphics.setFont(font);
-        this.height = graphics.getFontMetrics().getHeight();
-        this.width = graphics.getFontMetrics().stringWidth(this.message);
-        this.setBoundingBox(this.x, this.y, this.width, this.height);
+        this.setHeight(graphics.getFontMetrics().getHeight());
+        this.setWidth(graphics.getFontMetrics().stringWidth(this.message));
+        this.setBoundingBox(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 }

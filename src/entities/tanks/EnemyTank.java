@@ -17,8 +17,8 @@ public class EnemyTank extends AbstractTank
     public static final int ENEMY_TANK_WIDTH = Images.enemyTankUp.getWidth();
     public static final int ENEMY_TANK_HEIGHT = Images.enemyTankUp.getHeight();
 
-    public static final int ENEMY_TANK_BULLET_SPEED = 3;
-    public static final int ENEMY_TANK_SPEED = 1;
+    private static final int ENEMY_TANK_BULLET_SPEED = 3;
+    private static final int ENEMY_TANK_SPEED = 1;
 
     private static final int ENEMY_TANK_INITIAL_HEALTH = 20;
     private static final int ENEMY_TANK_INITIAL_DAMAGE = 10;
@@ -71,13 +71,13 @@ public class EnemyTank extends AbstractTank
     @Override
     public void print(Graphics graphics) {
         if (this.direction == 1) {
-            graphics.drawImage(Images.enemyTankUp, this.x, this.y, null);
+            graphics.drawImage(Images.enemyTankUp, this.getX(), this.getY(), null);
         } else if (this.direction == 2) {
-            graphics.drawImage(Images.enemyTankDown, this.x, this.y, null);
+            graphics.drawImage(Images.enemyTankDown, this.getX(), this.getY(), null);
         } else if (this.direction == 3) {
-            graphics.drawImage(Images.enemyTankLeft, this.x, this.y, null);
+            graphics.drawImage(Images.enemyTankLeft, this.getX(), this.getY(), null);
         } else if (this.direction == 4) {
-            graphics.drawImage(Images.enemyTankRight, this.x, this.y, null);
+            graphics.drawImage(Images.enemyTankRight, this.getX(), this.getY(), null);
         }
 
         graphics.setColor(Color.WHITE);
@@ -104,36 +104,36 @@ public class EnemyTank extends AbstractTank
     }
 
     private void move() {
-        if (this.direction == 1 && this.y - this.getSpeed() > 0) {
-            this.y -= this.getSpeed();
+        if (this.direction == 1 && this.getY() - this.getSpeed() > 0) {
+            this.setY(this.getY() - this.getSpeed());
         } else if (this.direction == 2 &&
-                this.y + ENEMY_TANK_HEIGHT + this.getSpeed() < GameWindow.WINDOW_HEIGHT) {
-            this.y += this.getSpeed();
-        } else if (this.direction == 3 && this.x - this.getSpeed() > 0) {
-            this.x -= this.getSpeed();
+                this.getY() + ENEMY_TANK_HEIGHT + this.getSpeed() < GameWindow.WINDOW_HEIGHT) {
+            this.setY(this.getY() + this.getSpeed());
+        } else if (this.direction == 3 && this.getX() - this.getSpeed() > 0) {
+            this.setX(this.getX() - this.getSpeed());
         } else if (this.direction == 4 &&
-                this.x + ENEMY_TANK_WIDTH + this.getSpeed() < GameWindow.WINDOW_WIDTH) {
-            this.x += this.getSpeed();
+                this.getX() + ENEMY_TANK_WIDTH + this.getSpeed() < GameWindow.WINDOW_WIDTH) {
+            this.setX(this.getX() + this.getSpeed());
         }
 
-        this.getBoundingBox().setBounds(this.x, this.y, this.width, this.height);
+        this.getBoundingBox().setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     private void shoot() {
         int bulletX;
         int bulletY;
         if (this.direction == 1) {
-            bulletX = (this.x + (ENEMY_TANK_WIDTH / 2 - 6));
-            bulletY = this.y;
+            bulletX = (this.getX() + (ENEMY_TANK_WIDTH / 2 - 6));
+            bulletY = this.getY();
         } else if (this.direction == 2) {
-            bulletX = (this.x + (ENEMY_TANK_WIDTH / 2 - 6));
-            bulletY = (this.y + ENEMY_TANK_HEIGHT);
+            bulletX = (this.getX() + (ENEMY_TANK_WIDTH / 2 - 6));
+            bulletY = (this.getY() + ENEMY_TANK_HEIGHT);
         } else if (this.direction == 3) {
-            bulletX = this.x;
-            bulletY = (this.y + (ENEMY_TANK_HEIGHT / 2 - 6));
+            bulletX = this.getX();
+            bulletY = (this.getY() + (ENEMY_TANK_HEIGHT / 2 - 6));
         } else {
-            bulletX = (this.x + ENEMY_TANK_WIDTH);
-            bulletY = (this.y + (ENEMY_TANK_HEIGHT / 2 - 6));
+            bulletX = (this.getX() + ENEMY_TANK_WIDTH);
+            bulletY = (this.getY() + (ENEMY_TANK_HEIGHT / 2 - 6));
         }
 
         Bullet bullet = new Bullet(bulletX, bulletY, this.direction, ENEMY_TANK_BULLET_SPEED);

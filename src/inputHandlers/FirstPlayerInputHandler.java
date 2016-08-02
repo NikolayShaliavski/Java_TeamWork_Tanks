@@ -1,11 +1,24 @@
-package input;
+package inputHandlers;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class SecondPlayerInputHandler extends InputHandler {
+/**
+ * Handles the input only for the first player.
+ * The keys for moving and shooting with the first player are:
+ * <ul>
+ * <li>Up - <b>A</b></li>
+ * <li>Down - <b>S</b></li>
+ * <li>Left - <b>A</b></li>
+ * <li>Right - <b>D</b></li>
+ * <li>Shoot - <b>Space</b></li>
+ * <li>Dropping bomb - <b>Shift</b></li>
+ * </ul>
+ */
+public class FirstPlayerInputHandler extends InputHandler implements KeyListener {
 
-    public SecondPlayerInputHandler(Frame frame) {
+    public FirstPlayerInputHandler(Frame frame) {
         super(frame);
     }
 
@@ -36,7 +49,7 @@ public class SecondPlayerInputHandler extends InputHandler {
             super.setLeft(false);
         }
 
-        if (keyCode == KeyEvent.VK_CONTROL) {
+        if (keyCode == KeyEvent.VK_SPACE) {
             super.setShoot(false);
         }
         if (keyCode == KeyEvent.VK_SHIFT) {
@@ -75,9 +88,10 @@ public class SecondPlayerInputHandler extends InputHandler {
             super.setLastDirection(4);
         }
 
-        if (keyCode == KeyEvent.VK_CONTROL) {
+        if (keyCode == KeyEvent.VK_SPACE) {
             super.setShoot(true);
         }
+
         if (keyCode == KeyEvent.VK_SHIFT) {
             super.setBomb(true);
         }
