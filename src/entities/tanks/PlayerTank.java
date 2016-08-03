@@ -67,6 +67,11 @@ public abstract class PlayerTank extends AbstractTank
 
     @Override
     public void print(Graphics graphics) {
+        
+        for (Bomb bomb : this.getBombs()) {
+            bomb.print(graphics);
+        }
+
         if (!this.inputHandler.isUp() &&
                 !this.inputHandler.isDown() &&
                 !this.inputHandler.isRight() &&
@@ -97,10 +102,6 @@ public abstract class PlayerTank extends AbstractTank
         graphics.setColor(Color.WHITE);
         for (int i = 0; i < this.getBullets().size(); i++) {
             this.getBullets().get(i).print(graphics);
-        }
-
-        for (Bomb bomb : this.getBombs()) {
-            bomb.print(graphics);
         }
     }
 
