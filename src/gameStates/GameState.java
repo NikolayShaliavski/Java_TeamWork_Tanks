@@ -17,10 +17,8 @@ import entities.obsticles.walls.SteelWall;
 import entities.tanks.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Defines solid core logic for all game states.
@@ -423,7 +421,6 @@ public abstract class GameState extends State implements Updatable, Printable {
                 Bullet enemyBullet = enemyTank.getBullets().get(j);
                 for (int k = 0; k < this.playerTanks.length; k++) {
                     if (enemyBullet.intersect(this.playerTanks[k].getBoundingBox())) {
-                        //this.playerTanks[k].decreaseHealth(this.playerTanks[k].getHealth() - enemyTank.getDamage());
                         this.playerTanks[k].decreaseHealth(enemyTank.getDamage());
                         toRemove.add(enemyTank.getBullets().get(j));
                     }
@@ -547,7 +544,7 @@ public abstract class GameState extends State implements Updatable, Printable {
     }
 
     private void checkCollisionBetweenBullets() {
-        LinkedHashMap<Integer, List<Bullet>> playerBulletsToRemove = new LinkedHashMap<>();
+        Map<Integer, List<Bullet>> playerBulletsToRemove = new LinkedHashMap<>();
         for (int p = 0; p < this.playerTanks.length; p++) {
             playerBulletsToRemove.put(p, new ArrayList<>());
             for (int i = 0; i < this.playerTanks[p].getBullets().size(); i++) {
