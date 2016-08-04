@@ -67,7 +67,7 @@ public abstract class PlayerTank extends AbstractTank
 
     @Override
     public void print(Graphics graphics) {
-        
+
         for (Bomb bomb : this.getBombs()) {
             bomb.print(graphics);
         }

@@ -18,12 +18,11 @@ public class MenuState extends State implements Updatable, Printable {
 
     private static final String ONE_PLAYER_MESSAGE = "One Player";
     private static final String TWO_PLAYERS_MESSAGE = "Two Players";
-    private static final String HOW_TO_PLAY_MESSAGE = "How To Play";
     private static final String EXIT_MESSAGE = "Exit";
 
     private static final int DEFAULT_X_MESSAGE = (GameWindow.WINDOW_WIDTH / 2) - (GameWindow.WINDOW_WIDTH / 8);
     private static final int DEFAULT_Y_MESSAGE = (GameWindow.WINDOW_HEIGHT / 2) - (GameWindow.WINDOW_HEIGHT / 7);
-    private static final int INDENT = GameWindow.WINDOW_HEIGHT / 6;
+    private static final int INDENT = GameWindow.WINDOW_HEIGHT / 5;
 
     private static final int DEFAULT_TANK_Y = 140;
 
@@ -49,7 +48,7 @@ public class MenuState extends State implements Updatable, Printable {
         if (this.canMove && this.menuInputHandler.isUp() && this.index > 0) {
             this.index--;
             this.canMove = false;
-        } else if (this.canMove && this.menuInputHandler.isDown() && this.index < 3) {
+        } else if (this.canMove && this.menuInputHandler.isDown() && this.index < 2) {
             this.index++;
             this.canMove = false;
         }
@@ -74,15 +73,13 @@ public class MenuState extends State implements Updatable, Printable {
         graphics.setFont(font);
         graphics.drawString(ONE_PLAYER_MESSAGE, DEFAULT_X_MESSAGE, DEFAULT_Y_MESSAGE);
         graphics.drawString(TWO_PLAYERS_MESSAGE, DEFAULT_X_MESSAGE, DEFAULT_Y_MESSAGE + INDENT);
-        graphics.drawString(HOW_TO_PLAY_MESSAGE, DEFAULT_X_MESSAGE, DEFAULT_Y_MESSAGE + INDENT * 2);
-        graphics.drawString(EXIT_MESSAGE, DEFAULT_X_MESSAGE, DEFAULT_Y_MESSAGE + INDENT * 3);
+        graphics.drawString(EXIT_MESSAGE, DEFAULT_X_MESSAGE, DEFAULT_Y_MESSAGE + INDENT * 2);
     }
 
     private void initPositions() {
         this.positions = new int[]{DEFAULT_TANK_Y,
                 DEFAULT_TANK_Y + INDENT,
-                DEFAULT_TANK_Y + INDENT * 2,
-                DEFAULT_TANK_Y + INDENT * 3};
+                DEFAULT_TANK_Y + INDENT * 2};
     }
 
     private void executeCommand() {
@@ -94,9 +91,6 @@ public class MenuState extends State implements Updatable, Printable {
                 this.executeTwoPlayersCommand();
                 break;
             case 2:
-                this.executeHowToPlayCommand();
-                break;
-            case 3:
                 this.executeExitCommand();
                 break;
         }
@@ -116,10 +110,6 @@ public class MenuState extends State implements Updatable, Printable {
         StateManager.setCurrentState(new TwoPlayerState(this.gameEngine,
                 this.firstPlayerInputHandler,
                 this.secondPlayerInputHandler));
-    }
-
-    private void executeHowToPlayCommand() {
-        // TODO ...
     }
 
     private void executeExitCommand() {
